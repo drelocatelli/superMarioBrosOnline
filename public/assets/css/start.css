@@ -1,0 +1,167 @@
+*{
+    user-select: none;
+}
+
+button{
+    cursor: pointer;
+    background: #de5918;
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+    border: 3px solid #000;
+    box-shadow: inset -2px 1px 0 #ffffff;
+    outline: none;
+    padding: 6px 12px;
+}
+
+button#audio{
+    position:absolute;
+    right:0;
+}
+
+.controls {
+    position: absolute;
+    top: 55vh;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.controls li{
+    list-style: none;
+    font-size:37px;
+    font-weight: bold;
+    text-align: center;
+    padding: 4px 10px;
+}
+
+.controls li:hover {
+    cursor: pointer;
+    background: #000;
+    color: #ccc;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    background:url('../img/bg.png')no-repeat;
+    background-size:cover;
+    background-color: #000;
+}
+
+.header{
+    background: url('../img/header.png')no-repeat;
+    background-size: cover;
+    width:620px;
+    height:312px;
+    position: absolute;
+    transform: translateX(-50%);
+    top:10vh;
+    left:50%;
+}
+
+.enemy{
+    background: url('../sprites/enemy-1-move.gif')no-repeat;
+    background-size: cover;
+    width: 7.257203842049093vh;
+    height: 7.257203842049093vh;
+    position: absolute;
+    bottom: 14.5vh;
+    right: 10vh;
+}
+
+.enemy-anim{
+    animation-name: basicMove;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate;
+    animation-delay: 1s;
+}
+
+.cloud-1, .cloud-2, .cloud-3{
+    position: absolute;
+}
+
+.cloud-1{
+    top:5vh;
+}
+
+.cloud-2{
+    right:0;
+    top:5vh;
+}
+
+.cloud-3{
+    top:34vh;
+    left:25vh;
+}
+
+.cloud-1-anim{
+    animation-name: cloudsMove;
+    animation-duration: 60s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+    animation-direction: alternate;
+    animation-delay: 1s; 
+}
+
+.cloud-2-anim{
+    animation-name: cloudsMove2;
+    animation-duration: 40s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+    animation-direction: alternate;
+    animation-delay: 1s; 
+}
+
+.cloud-3-anim{
+    animation-name: cloudsMove3;
+    animation-duration: 30s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+    animation-direction: alternate;
+    animation-delay: 1s; 
+}
+
+@keyframes cloudsMove{
+    from{
+        left:0vh;
+    }
+    to{
+        left:80vh;
+    }
+}
+
+@keyframes cloudsMove2{
+    from{
+        right:0;
+    }
+    to{
+        right:80vh;
+    }
+}
+
+@keyframes cloudsMove3{
+    from{
+        left:25vh;
+    }
+    to{
+        left:80vh;
+    }
+}
+
+
+
+@keyframes basicMove{
+    from{
+        right:10vh;
+    }
+    to{
+        right:50vh;
+    }
+}
+
+@media (min-height: 1080px){
+    .enemy{
+        bottom:25.9vh;
+    }
+}

@@ -13,7 +13,7 @@ class Game{
         let sound = document.createElement('audio');
         sound.src = `assets/soundtrack/${src}`
         sound.autoplay = true;
-        sound.crossOrigin = 'anonymous';
+        // sound.crossOrigin = 'anonymous';
         sound.volume = 0.4
         document.body.appendChild(sound)
         let buttonAudio = document.querySelector('button#audio')
@@ -25,11 +25,11 @@ class Game{
         buttonAudio.onclick = function(e){
             if(buttonAudio.dataset.target == 'play'){
                 buttonAudio.dataset.target = 'stop'
-                img.src = '../assets/controls/mute.png'
+                img.src = 'assets/controls/mute.png'
                 sound.pause()
             }else{
                 buttonAudio.dataset.target = 'play'
-                img.src = '../assets/controls/sound.png'
+                img.src = 'assets/controls/sound.png'
                 sound.play()
             }
         }

@@ -59,7 +59,7 @@ body{
 }
 
 .enemy{
-    background: url(../sprites/enemy-1-move.gif)no-repeat;
+    background: url('../sprites/enemy-1-move.gif')no-repeat;
     background-size: cover;
     width: 7.257203842049093vh;
     height: 7.257203842049093vh;

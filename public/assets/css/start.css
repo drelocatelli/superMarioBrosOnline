@@ -29,14 +29,14 @@ button#audio{
 
 .controls {
     position: absolute;
-    top: 55vh;
+    top: 48vh;
     left: 50%;
     transform: translate(-50%,-50%);
 }
 
-.controls li{
+.controls li {
     list-style: none;
-    font-size:25px;
+    font-size: 2.4vh;
     font-weight: bold;
     text-align: center;
     padding: 10px 10px;
@@ -62,15 +62,16 @@ body{
 }
 
 .header{
-    background: url('../img/header.png')no-repeat;
-    background-size: cover;
-    width:620px;
-    height:312px;
     max-width: 100%;
     position: absolute;
-    transform: translateX(-50%);
     top:10vh;
     left:50%;
+}
+
+.header img {
+    width: 85vh;
+    max-width: 70%;
+    transform: translateX(-50%);
 }
 
 connections{
@@ -84,6 +85,7 @@ connections{
     background:#ffffffa4;
     z-index:1;
     text-align: center;
+    box-sizing: border-box;
 }
 
 connections ul{
@@ -92,24 +94,24 @@ connections ul{
     padding:0;
 }
 
-connections ul li{
-    font-size:18px;
-}
-
 connections li{
     list-style: none;
-    margin:30px 0 10px 0;
-    font-size:25px;
+    padding:1.3vh 0;
+    font-size:1.5vh;
 }
 
 .enemy{
-    background: url('../sprites/enemy-1-move.gif')no-repeat;
-    background-size: cover;
-    width: 7.257203842049093vh;
-    height: 7.257203842049093vh;
     position: absolute;
-    bottom: 14.5vh;
+    bottom: 0;
     right: 10vh;
+}
+
+.enemy img {
+    width: 7vh;
+    position: absolute;
+    bottom: 11.1vh;
+    right: 10vh;
+    transform: translate(-50%,-50%);
 }
 
 .enemy-anim{
@@ -123,6 +125,14 @@ connections li{
 
 .cloud-1, .cloud-2, .cloud-3{
     position: absolute;
+}
+
+.cloud-2 img{
+    width: 14vh;
+}
+
+.cloud-1 img, .cloud-3 img{
+    width:25vh;
 }
 
 .cloud-1{

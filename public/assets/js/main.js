@@ -1,6 +1,8 @@
 class Game{
 
     constructor(){
+        this.root = this.basename(document.querySelector('root').innerHTML)
+        this.assets = `../public/assets`
         this.main();
     }
 
@@ -11,8 +13,9 @@ class Game{
 
     play_song(src){
         let sound = document.createElement('audio');
-        sound.src = `assets/soundtrack/${src}`
+        sound.src = `./${this.assets}/soundtrack/${src}`
         sound.autoplay = true;
+        sound.play()
         // sound.crossOrigin = 'anonymous';
         sound.volume = 0.4
         document.body.appendChild(sound)
@@ -25,19 +28,22 @@ class Game{
         buttonAudio.onclick = function(e){
             if(buttonAudio.dataset.target == 'play'){
                 buttonAudio.dataset.target = 'stop'
-                img.src = 'assets/controls/mute.png'
                 sound.pause()
             }else{
                 buttonAudio.dataset.target = 'play'
-                img.src = 'assets/controls/sound.png'
                 sound.play()
             }
         }
     }
 
+    basename(path) {
+        return path.split(/[\\/]/).pop();;
+     }
+
 }
 
 window.onload = function(){
     const game = new Game();
+    
 }
 

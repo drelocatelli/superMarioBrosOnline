@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="../public/assets/css/basic.css">
     <link rel="stylesheet" href="../public/assets/css/start.css">
 
-    <script src="../public/assets/js/main.js"></script>
-    <title>Game Iframe</title>
+    <script type="module" src="../public/assets/js/main.js"></script>
+    <title><%= name %></title>
 </head>
 <body>
+    <root style="visibility: hidden;"><%= root %></root>
+    <connections>
+        Status:<br>
+        <li id="users">0 player(s)</li>
+        <ul id="list"></ul>
+    </connections>
 
     <div class="cloud-1 cloud-1-anim">
         <img src="../public/assets/sprites/cloud-1.png">
@@ -36,11 +42,13 @@
     <div class="controls">
         <ul>
             <li id="play">Jogar com amigos</li>
-            <li id="credits">Desenvolvedor</li>
+            <li id="credits">Projeto</li>
         </ul>
     </div>
 
     <div class="enemy enemy-anim"></div>
-    
+
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="../public/assets/js/connect.js"></script>
 </body>
 </html>

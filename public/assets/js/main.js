@@ -43,6 +43,11 @@ class Game{
 }
 
 window.onload = function(){
+    let imgs = document.querySelectorAll('img')
+    imgs.forEach(img => {
+        img.draggable = false
+    })
+
     const game = new Game();
     
 }

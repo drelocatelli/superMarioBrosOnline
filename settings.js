@@ -32,7 +32,10 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () =>{
         users--;
         io.sockets.emit('logout', {users, id: socket.id});
+    })
 
+    socket.on('keypress', (key) =>{
+        io.sockets.emit('keypressed', key)
     })
     
 })

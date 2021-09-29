@@ -10,6 +10,7 @@ let character = [
     "Yoshi"
 ]
 
+// player logado
 socket.on('login', action =>{
     connectionsEl.querySelector('li#users').innerHTML = `<li>${action.users} player(s)</li>` 
 
@@ -31,20 +32,39 @@ socket.on('login', action =>{
         players.innerHTML += player
     })
     
+    console.log(`%c Entrou no game: ${action.id}`, "background:green; color:white;")
+    
 })
 
 // remove player
 socket.on('logout', action =>{
 
-        connectionsEl.querySelector('li#users').innerHTML = `<li>${action.users} player(s)</li>` 
+    connectionsEl.querySelector('li#users').innerHTML = `<li>${action.users} player(s)</li>` 
 
-        let playersContainers = players.querySelectorAll('.player-container')
-        
-        playersContainers.forEach(playerContainer => {
-            if(playerContainer.dataset.id == action.id){
-                playerContainer.remove()
-            }
-        })
-
-
+    let playersContainers = players.querySelectorAll('.player-container')
+    
+    playersContainers.forEach(playerContainer => {
+        if(playerContainer.dataset.id == action.id){
+            playerContainer.remove()
+        }
     })
+
+    console.log(`%c Saiu do game: ${action.id}`, "background:orange; color:white;")
+
+})
+
+// game properties ----------------------------------------------
+
+document.addEventListener('keypress', function(event){
+
+    socket.emit('keypress', {key: event.code, id: socket.id})
+    
+})
+
+// game socket ----------------------------------------------
+socket.on('keypressed', action => {
+    
+    console.log(`%c Apertou uma tecla (${action.key}): ${action.id}`, "background:blue; color:white;")
+
+})
+

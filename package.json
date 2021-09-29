@@ -10,7 +10,8 @@
     "socket.io": "^4.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "requirejs": "^2.3.6"
   },
   "scripts": {
     "start": "nodemon",

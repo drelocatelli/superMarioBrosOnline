@@ -10,5 +10,5 @@ let player = [
 ]
 
 socket.on('login', login =>{
-    connectionsEl.querySelector('li#users').innerHTML = `<li>${login.users} player(s)</li>`    
+    connectionsEl.querySelector('li#users').innerHTML = `<li>${login.users} player(s)</li>`  
 })

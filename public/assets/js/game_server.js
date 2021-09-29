@@ -18,14 +18,12 @@ socket.on('login', action =>{
 
     // seta player na tela
 
-    for(let i = 0; i < parseInt(action.users); i++){
-        player[i] = `<div class="player-container" id="${action.id}">
-                 <span class="name">Player ${i+1}</span>
-                
-                 <img src="../public/assets/sprites/${character[Math.floor(Math.random() * (character.length - 0) + 0)]}-1.png" class="player">
-             </div>
-             `
-    }
+    player.push(`<div class="player-container" id="${action.id}">
+                <span class="name">Player</span>
+            
+                <img src="../public/assets/sprites/${character[Math.floor(Math.random() * (character.length - 0) + 0)]}-1.png" class="player">
+            </div>
+            `)
 
     player.forEach(player => {
         players.innerHTML += player
@@ -52,98 +50,48 @@ socket.on('logout', action =>{
 
 })
 
-// game properties ----------------------------------------------
+document.addEventListener('keyup', (key) => {
 
-document.addEventListener('keypress', function(event){
-
-    socket.emit('keypress', {key: event.code, id: socket.id})
+    socket.emit('keypress', {key: key.code, id: socket.id})
     
 })
 
-// game socket ----------------------------------------------
+socket.on('connected', (socket)=>{
+    io.sockets.emit('login', {users, id: socket.id});
+})
 
-// detecta tecla
-socket.on('keypressed', action => {
+socket.on('keypressed', event => {
 
-    let playersContainers = players.querySelectorAll('.player-container')
+    console.log(`%c Apertou uma tecla (${event.key}): ${event.id}`, "background:blue; color:white;")
     
-    playersContainers.forEach(playerContainer => {
-        // seleciona o player que pressionou a tecla
-        if(playerContainer.id == action.id){
-            // console.log(playerContainer, action.id, playerContainer.querySelector('span').textContent)
-            switch(action.key){
-                case 'Space':
-                    socket.emit('player_movement', {Moveto:'top', key: action.key, player: action.id})
-                break;
-                case 'KeyW':
-                    socket.emit('player_movement', {Moveto:'top', key: action.key, player: action.id})
-                break;
-                case 'KeyA':
-                    socket.emit('player_movement', {Moveto:'left', key: action.key, player: action.id})
-                break;
-                case 'KeyD':
-                    socket.emit('player_movement', {Moveto:'right', key: action.key, player: action.id})
-                break;
-            }
-        }
-    })
+    let playerContainer = document.querySelectorAll('.player-container')
+    let pcontainer = Array.from(playerContainer)
 
+    let uniqueContainer = pcontainer.find(x => x.id === event.id)
+
+    switch(event.key){
+        case 'Space':
+            socket.emit('player_movement', {position: 'up' , id:event.id})
+        break;
+    }
+    
 })
 
 
+socket.on('player_move', (event) => {
 
-// detecta movimento do player
-socket.on('connect', ()=>{
-    console.log('Conectados')
-})
+    let playerContainer = document.querySelectorAll('.player-container')
+    let pcontainer = Array.from(playerContainer)
 
-socket.on('player_move', action=>{
-    console.log(`%c Apertou uma tecla (${action.key}): ${action.player}`, "background:blue; color:white;")
+    let uniqueContainer = pcontainer.find(x => x.id === event.id)
 
-    let container = Array.from(players.querySelectorAll(`.player-container`))
+    // console.log(event)
 
-    container.find(currentPlayer => {
-        return currentPlayer.id = action.player;
-    })
-
-    container.forEach(currentPlayer =>{
-        switch(action.key){
-            case 'Space':
-                if(currentPlayer.id == action.player){
-                    console.log(currentPlayer)
-                    currentPlayer.style.bottom = "18%";
-                    setTimeout(()=>{
-                        currentPlayer.style.bottom = '11%';
-                    }, 200)
-                }
-            break;
-        }
-    })
-
-    // switch(action.key){
-    //     case 'Space':
-    //         console.log(container)
-    //         container.style.bottom = "18%";
-    //         setTimeout(()=>{
-    //             container.style.bottom = '11%';
-    //         }, 200)
-    //     break;
-    //     case 'KeyW':
-    //         console.log(container)
-    //         container.style.bottom = "20%";
-    //         setTimeout(()=>{
-    //             container.style.bottom = '11%';
-    //         }, 200)
-    //     break;
-    //     case 'KeyA':
-    //         // let currentRight = parseInt(window.getComputedStyle(container).left)
-    //         // console.log(currentRight)
-    //         // container.style.left = `${(currentRight - 100)}px`;
-    //     break;
-    //     case 'KeyD':
-    //         // let currentLeft = parseInt(window.getComputedStyle(container).left)
-    //         // console.log(currentLeft)
-    //         // container.style.left = `${(currentLeft + 100)}px`;
-    //     break;
-    // }
+    switch(event.position){
+        case 'up':
+            uniqueContainer.style.bottom = "18%"
+        break;
+    }
+    
+    
 })

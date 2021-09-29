@@ -34,15 +34,16 @@ io.on('connection', (socket) => {
         io.sockets.emit('logout', {users, id: socket.id});
     })
 
-    socket.on('keypress', (key) =>{
-        io.sockets.emit('keypressed', key)
+    socket.on('keypress', (event) => {
+        io.sockets.emit('keypressed', event);
     })
 
-    socket.on('player_movement', (action) =>{
-        io.sockets.emit('player_move', action)
+    socket.on('player_movement', (action) => {
+        io.sockets.emit('player_move', {action, users});
     })
+
     
 })
 
 
-server.listen(3000)
+server.listen(80)

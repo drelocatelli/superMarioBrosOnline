@@ -44,3 +44,37 @@ img.player {
 .mountain{
     width:30%;
 }
+
+credits{
+    position: absolute;
+    bottom: 11.8%;
+    cursor:pointer;
+    right: 5px;
+    /* text-shadow: 2px 2px 0px #fff; */
+    color: #2c2c2c;
+    font-size: 8px;
+    opacity:0.6;
+}
+
+credits:hover{
+    opacity:1;
+}
+
+
+.clouds-anim{
+    animation-name: cloudsMove;
+    animation-duration: 500s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+    animation-direction: alternate;
+    animation-delay: 0s; 
+}
+
+@keyframes cloudsMove{
+    from{
+        background-position: top left;
+    }
+    to{
+        background-position: top right;
+    }
+}

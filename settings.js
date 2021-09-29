@@ -37,6 +37,10 @@ io.on('connection', (socket) => {
     socket.on('keypress', (key) =>{
         io.sockets.emit('keypressed', key)
     })
+
+    socket.on('player_movement', (action) =>{
+        io.sockets.emit('player_move', action)
+    })
     
 })
 

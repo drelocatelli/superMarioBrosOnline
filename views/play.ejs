@@ -12,7 +12,7 @@
     <script type="module" src="../public/assets/js/main.js"></script>
     <title><%= name %></title>
 </head>
-<body>
+<body class="clouds-anim">
     <root style="visibility: hidden;"><%= root %></root>
     <connections>
         Status:<br>
@@ -29,16 +29,15 @@
     <img src="../public/assets/sprites/mountain-1.png" class="mountain back">
 
     <div class="players">
-        <!-- <div class="player-container">
-            <span class="name">Player 1</span>
-            
-            <img src="../public/assets/sprites/mario-1.png" class="player">
-        </div> -->
     </div>
     
 
     <div class="cenario">
     </div>
+
+    <credits onclick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')">
+        Drelocatelli
+    </credits>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="../public/assets/js/game_server.js"></script>

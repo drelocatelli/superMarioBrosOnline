@@ -63,6 +63,16 @@ document.addEventListener('keypress', function(event){
 
 // game socket ----------------------------------------------
 socket.on('keypressed', action => {
+
+    let playersContainers = players.querySelectorAll('.player-container')
+    
+    playersContainers.forEach(playerContainer => {
+        // seleciona o player que pressionou a tecla
+        if(playerContainer.dataset.id == action.id){
+            console.log(playerContainer)
+            playerContainer.querySelector('img').style.top = '10px'
+        }
+    })
     
     console.log(`%c Apertou uma tecla (${action.key}): ${action.id}`, "background:blue; color:white;")
 

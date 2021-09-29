@@ -12,8 +12,14 @@ const io = socketio(server)
 app.set('view engine', 'ejs')
 app.use('/public', express.static('public'))
 
+let game = 'Super Mario Bros Online'
+
 app.get('/', function(req, res){
-    res.render('index', {name: 'Super Mario Bros Online', root: path.resolve(path.dirname(''))})
+    res.render('index', {name: game, root: path.resolve(path.dirname(''))})
+})
+
+app.get('/play', function(req, res){
+    res.render('play', {name: game, root: path.resolve(path.dirname(''))})
 })
 
 let users = 0;
@@ -21,11 +27,12 @@ let users = 0;
 io.on('connection', (socket) => {
     users++;
 
-    io.sockets.emit('login', {users});
+    io.sockets.emit('login', {users, id: socket.id});
 
-    socket.on('disconnect', (socket) =>{
+    socket.on('disconnect', () =>{
         users--;
-        io.sockets.emit('login', {users});
+        io.sockets.emit('logout', {users, id: socket.id});
+
     })
     
 })

@@ -8,7 +8,6 @@ class Game{
 
     main(){
         this.play_song("default.mp3");
-      
     }
 
     play_song(src){

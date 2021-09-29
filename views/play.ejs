@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../public/assets/css/normalize.css">
     <link rel="stylesheet" href="../public/assets/css/basic.css">
     <link rel="stylesheet" href="../public/assets/css/start.css">
+    <link rel="stylesheet" href="../public/assets/css/game.css">
 
     <script type="module" src="../public/assets/js/main.js"></script>
     <title><%= name %></title>
@@ -19,40 +20,27 @@
         <ul id="list"></ul>
     </connections>
 
-    <div class="cloud-1 cloud-1-anim">
-        <img src="../public/assets/sprites/cloud-1.png">
-    </div>
-
-    <div class="cloud-2 cloud-2-anim">
-        <img src="../public/assets/sprites/cloud-2.png">
-    </div>
-
-    <div class="cloud-3 cloud-3-anim">
-        <img src="../public/assets/sprites/cloud-1.png">
-    </div>
-
-    <div class="header">
-        <img src="../public/assets/img/header.png" alt="">
-    </div>
-
     <div class="buttons">
         <button id="audio">
            <img src="../public/assets/controls/sound.png">
         </button>
     </div>
 
-    <div class="controls">
-        <ul>
-            <li id="play" onclick="window.open('/play', '_self')">Jogar com amigos</li>
-            <li id="credits">Projeto</li>
-        </ul>
+    <img src="../public/assets/sprites/mountain-1.png" class="mountain back">
+
+    <div class="players">
+        <!-- <div class="player-container">
+            <span class="name">Player 1</span>
+            
+            <img src="../public/assets/sprites/mario-1.png" class="player">
+        </div> -->
+    </div>
+    
+
+    <div class="cenario">
     </div>
 
-    <div class="enemy enemy-anim">
-        <img src="../public/assets/sprites/enemy-1-move.gif" alt="">
-    </div>
-
-    <script src="./socket.io/socket.io.js"></script>
-    <script src="../public/assets/js/connect.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../public/assets/js/game_server.js"></script>
 </body>
 </html>

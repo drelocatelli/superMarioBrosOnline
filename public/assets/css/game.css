@@ -1,0 +1,46 @@
+body {
+    background: url(../sprites/bg-1.png)repeat-x;
+    background-color: #5c94fc;
+    background-size: 500%;
+    image-rendering: pixelated;
+    background-position: top left;
+}
+
+.cenario {
+    background: url(../sprites/terrain-2.png) repeat bottom;
+    position: absolute;
+    background-position-y: 58px;
+    bottom: 0;
+    height: 11vh;
+    width: 100%;
+    image-rendering: pixelated;
+    background-size: 3%;
+}
+
+.back{
+    position: absolute;
+    bottom:10%;
+    image-rendering: pixelated;
+}
+
+.player-container {
+    position: absolute;
+    bottom: 11%;
+    left: 100px;
+    height: 181px;
+    text-shadow: 1px 3px 0px #fff;
+    width: 120px;
+    text-align: center;
+}
+
+img.player {
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.mountain{
+    width:30%;
+}

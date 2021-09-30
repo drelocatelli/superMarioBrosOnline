@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('player_movement', (action) => {
-        io.sockets.emit('player_move', {action, users});
+        io.sockets.emit('player_move', action);
     })
 
     

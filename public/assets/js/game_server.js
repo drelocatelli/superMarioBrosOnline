@@ -50,7 +50,7 @@ socket.on('logout', action =>{
 
 })
 
-document.addEventListener('keyup', (key) => {
+document.addEventListener('keypress', (key) => {
 
     socket.emit('keypress', {key: key.code, id: socket.id})
     
@@ -71,7 +71,14 @@ socket.on('keypressed', event => {
 
     switch(event.key){
         case 'Space':
+        case 'KeyW':
             socket.emit('player_movement', {position: 'up' , id:event.id})
+        break;
+        case 'KeyA':
+            socket.emit('player_movement', {position: 'left' , id:event.id})
+        break;
+        case 'KeyD':
+            socket.emit('player_movement', {position: 'right' , id:event.id})
         break;
     }
     
@@ -83,11 +90,11 @@ socket.on('player_move', (event) => {
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)
 
-    let uniqueContainer = pcontainer.find(x => x.id === event.action.id)
+    let uniqueContainer = pcontainer.find(x => x.id === event.id)
 
     if(uniqueContainer == undefined){
         players.innerHTML += `
-        <div class="player-container" id="${event.action.id}">
+        <div class="player-container" id="${event.id}">
                 <span class="name">Player</span>
             
                 <img src="../public/assets/sprites/${character[Math.floor(Math.random() * (character.length - 0) + 0)]}-1.png" class="player">
@@ -95,9 +102,28 @@ socket.on('player_move', (event) => {
         `
     }
 
-    switch(event.action.position){
+    let currentPlayer = socket.id
+    let currentContainer = pcontainer.find(x => x.id === currentPlayer)
+
+    currentContainer.style.zIndex = '2'
+    
+
+    switch(event.position){
         case 'up':
             uniqueContainer.style.bottom = "18%"
+            setTimeout(()=>{
+                uniqueContainer.style.bottom = "11%"
+            }, 200)
+        break;
+        case 'left':
+            let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
+            let newLeft = (Number(currentLeft) - 10)
+            uniqueContainer.style.left = `${newLeft}px`;
+        break;
+        case 'right':
+            let currentRight = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
+            let newRight = (Number(currentRight) + 10)
+            uniqueContainer.style.left = `${newRight}px`;
         break;
     }
     

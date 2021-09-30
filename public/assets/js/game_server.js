@@ -83,11 +83,19 @@ socket.on('player_move', (event) => {
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)
 
-    let uniqueContainer = pcontainer.find(x => x.id === event.id)
+    let uniqueContainer = pcontainer.find(x => x.id === event.action.id)
 
-    // console.log(event)
+    if(uniqueContainer == undefined){
+        players.innerHTML += `
+        <div class="player-container" id="${event.action.id}">
+                <span class="name">Player</span>
+            
+                <img src="../public/assets/sprites/${character[Math.floor(Math.random() * (character.length - 0) + 0)]}-1.png" class="player">
+            </div>
+        `
+    }
 
-    switch(event.position){
+    switch(event.action.position){
         case 'up':
             uniqueContainer.style.bottom = "18%"
         break;

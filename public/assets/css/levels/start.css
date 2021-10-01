@@ -1,0 +1,138 @@
+@font-face {
+    font-family: 'Pixeled';
+    src: url('../../../fonts/Pixeled.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+body {
+    background: url('../../sprites/bg-1.png')repeat-x;
+    background-color: #A1ADFF;
+    background-size: 500%;
+    image-rendering: pixelated;
+    background-position: top left;
+}
+
+*{
+    user-select: none;
+    font-family: 'Pixeled', sans-serif;
+}
+
+.cenario {
+    background: url('../../sprites/terrain-2.png');
+    background-size: 3%;
+}
+
+.mountain{
+    width:30%;
+}
+
+.controls {
+    position: absolute;
+    top: 48vh;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.controls li {
+    list-style: none;
+    font-size: 2.4vh;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 10px;
+}
+
+.controls li:hover {
+    cursor: pointer;
+    background: #000;
+    color: #ccc;
+}
+
+.clouds-anim{
+    animation-name: cloudsMove;
+    animation-duration: 500s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+    animation-direction: alternate;
+    animation-delay: 0s; 
+}
+
+@keyframes cloudsMove{
+    from{
+        background-position: top left;
+    }
+    to{
+        background-position: top right;
+    }
+}
+
+root{
+    position:absolute;
+    font-size:10px;
+}
+
+.player-container {
+    position: absolute;
+    bottom: 11%;
+    left: 100px;
+    height: 181px;
+    text-shadow: 1px 3px 0px #fff;
+    width: 120px;
+    text-align: center;
+}
+
+img.player {
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+
+connections{
+    position: absolute;
+    display:block;
+    width:40vh;
+    height:10vh;
+    top:15px;
+    left:15px;
+    padding:10px;
+    font-size:2vh;
+    background:#ffffffa4;
+    z-index:1;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+connections ul{
+    display:block;
+    list-style: none;
+    padding:0;
+}
+
+connections li{
+    list-style: none;
+    padding:1.3vh 0;
+    font-size:1.5vh;
+}
+
+.clouds-anim{
+    animation-name: cloudsMove;
+    animation-duration: 500s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+    animation-direction: alternate;
+    animation-delay: 0s; 
+}
+
+@keyframes cloudsMove{
+    from{
+        background-position: top left;
+    }
+    to{
+        background-position: top right;
+    }
+}

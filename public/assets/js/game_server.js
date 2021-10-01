@@ -4,10 +4,25 @@ let connectionsEl = document.querySelector('connections')
 
 let players = document.querySelector('.players') 
 
-let character = [
-    "Mario",
-    "Luigi",
-]
+
+// get public ip
+let shareEl = document.querySelector('share').querySelector('input')
+
+let request = new Request('https://api.ipify.org?format=json', {
+    method: 'GET',
+  });
+
+  fetch(request).then(function(response) { return response.text() }).then(function(response){
+    response = JSON.parse(response)
+
+    shareEl.value = `http://${response.ip}`
+  });
+
+  shareEl.onmouseenter = function(e){
+    e.target.select()
+    document.execCommand('copy')
+  }
+
 
 // player logado
 socket.on('login', action =>{
@@ -21,7 +36,7 @@ socket.on('login', action =>{
     player.push(`<div class="player-container" id="${action.id}">
                 <span class="name">Player</span>
             
-                <img src="../public/assets/sprites/${character[Math.floor(Math.random() * (character.length - 0) + 0)]}-1.png" class="player">
+                <img src="../public/assets/sprites/mario-1.png" class="player">
             </div>
             `)
 
@@ -97,7 +112,7 @@ socket.on('player_move', (event) => {
         <div class="player-container" id="${event.id}">
                 <span class="name">Player</span>
             
-                <img src="../public/assets/sprites/${character[Math.floor(Math.random() * (character.length - 0) + 0)]}-1.png" class="player">
+                <img src="../public/assets/sprites/mario-1.png" class="player">
             </div>
         `
     }

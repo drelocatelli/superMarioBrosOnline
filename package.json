@@ -14,7 +14,7 @@
     "requirejs": "^2.3.6"
   },
   "scripts": {
-    "start": "nodemon",
+    "start": "nodemon -e js,ejs,html -w . -w public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

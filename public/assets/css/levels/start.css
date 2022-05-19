@@ -73,6 +73,12 @@ root{
     font-size:10px;
 }
 
+.scroll-spacing {
+    width: 700px;
+    display: block;
+    height: 19px;
+}
+
 .player-container {
     position: absolute;
     bottom: 11%;

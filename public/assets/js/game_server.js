@@ -10,11 +10,6 @@ let request = new Request('https://api.ipify.org?format=json', {
     method: 'GET',
 });
 
-fetch(request).then(function (response) { return response.text() }).then(function (response) {
-    response = JSON.parse(response)
-
-    shareEl.value = `http://${response.ip}`
-});
 
 shareEl.onmouseenter = function (e) {
     e.target.select()
@@ -31,11 +26,12 @@ socket.on('login', action => {
 
     // seta player na tela
 
-    player.push(`<div class="player-container" id="${action.id}">
-                <span class="name">Player</span>
-            
-                <img src="../public/assets/sprites/mario-1.png" class="player">
-            </div>
+    player.push(`
+    <div class="player-container" id="${action.id}">
+        <div class="scroll-spacing"></div>
+            <span class="name">Player</span>
+            <img src="../public/assets/sprites/mario-1.png" class="player">
+    </div>
             `)
 
     player.forEach(player => {
@@ -78,11 +74,12 @@ function scrollFollowsPlayer(playerElement) {
 document.addEventListener('keypress', (key) => {
 
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
-        if(player.id == socket.id)
-            return player
+        console.log()
+        if (player.id == socket.id)
+            return player.querySelector('.scroll-spacing')
     })[0];
-    console.log("Você pressionou uma tecla!");
-    
+    console.log(`%c Você pressionou uma tecla: ${socket.id}`, "background:red; color:white");
+
     socket.emit('keypress', { key: key.code, id: socket.id })
     scrollFollowsPlayer(yourPlayerElement);
 
@@ -158,7 +155,7 @@ socket.on('player_move', (event) => {
             setCharacterPositionRight()
             break;
     }
-    
+
     function setCharacterPositionUP() {
         uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
         uniqueContainer.style.bottom = `${upDeslocation}%`
@@ -181,7 +178,7 @@ socket.on('player_move', (event) => {
         uniqueContainer.style.left = `${newRight}px`;
     }
 
-    
+
 
 
 })

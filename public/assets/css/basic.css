@@ -35,7 +35,7 @@ button#audio{
 }
 
 .back{
-    position: fixed;
+    position: absolute;
     bottom:10%;
     image-rendering: pixelated;
 }

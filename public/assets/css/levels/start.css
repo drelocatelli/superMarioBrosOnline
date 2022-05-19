@@ -73,6 +73,12 @@ root{
     font-size:10px;
 }
 
+.scroll-spacing {
+    width: 700px;
+    display: block;
+    height: 19px;
+}
+
 .player-container {
     position: absolute;
     bottom: 11%;
@@ -93,7 +99,7 @@ img.player {
 
 
 connections{
-    position: absolute;
+    position: fixed;
     display:block;
     width:40vh;
     height:10vh;

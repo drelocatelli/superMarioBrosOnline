@@ -1,10 +1,7 @@
 const socket = io()
 
 let connectionsEl = document.querySelector('connections')
-
 let players = document.querySelector('.players')
-
-
 
 // get public ip
 let shareEl = document.querySelector('share').querySelector('input')
@@ -13,11 +10,6 @@ let request = new Request('https://api.ipify.org?format=json', {
     method: 'GET',
 });
 
-fetch(request).then(function (response) { return response.text() }).then(function (response) {
-    response = JSON.parse(response)
-
-    shareEl.value = `http://${response.ip}`
-});
 
 shareEl.onmouseenter = function (e) {
     e.target.select()
@@ -34,11 +26,12 @@ socket.on('login', action => {
 
     // seta player na tela
 
-    player.push(`<div class="player-container" id="${action.id}">
-                <span class="name">Player</span>
-            
-                <img src="../public/assets/sprites/mario-1.png" class="player">
-            </div>
+    player.push(`
+    <div class="player-container" id="${action.id}">
+        <div class="scroll-spacing"></div>
+            <span class="name">Player</span>
+            <img src="../public/assets/sprites/mario-1.png" class="player">
+    </div>
             `)
 
     player.forEach(player => {
@@ -68,9 +61,27 @@ socket.on('logout', action => {
 
 // emite o evento de tecla pressionada para
 
+function scrollFollowsPlayer(playerElement) {
+    // console.log(uniqueContainer.style.left)
+    let scrollCurrentPosition = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollLimit = window.screen.availWidth || window.screen.width;
+    let currentPlayerPosition = playerElement.getBoundingClientRect().left;
+
+    window.scrollTo(currentPlayerPosition * 2, 0);
+
+}
+
 document.addEventListener('keypress', (key) => {
 
+    let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
+        console.log()
+        if (player.id == socket.id)
+            return player.querySelector('.scroll-spacing')
+    })[0];
+    console.log(`%c Você pressionou uma tecla: ${socket.id}`, "background:red; color:white");
+
     socket.emit('keypress', { key: key.code, id: socket.id })
+    scrollFollowsPlayer(yourPlayerElement);
 
 })
 
@@ -144,7 +155,7 @@ socket.on('player_move', (event) => {
             setCharacterPositionRight()
             break;
     }
-    
+
     function setCharacterPositionUP() {
         uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
         uniqueContainer.style.bottom = `${upDeslocation}%`
@@ -154,7 +165,6 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionLeft() {
-        
         let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newLeft = (Number(currentLeft) - 10)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
@@ -162,12 +172,13 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionRight() {
-        
         let currentRight = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newRight = (Number(currentRight) + 10)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         uniqueContainer.style.left = `${newRight}px`;
     }
+
+
 
 
 })

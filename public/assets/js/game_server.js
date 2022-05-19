@@ -60,25 +60,40 @@ socket.on('logout', action => {
 })
 
 // emite o evento de tecla pressionada para
-
 function scrollFollowsPlayer(playerElement) {
-    // console.log(uniqueContainer.style.left)
     let scrollCurrentPosition = window.pageYOffset || document.documentElement.scrollTop;
     let scrollLimit = window.screen.availWidth || window.screen.width;
     let currentPlayerPosition = playerElement.getBoundingClientRect().left;
 
     window.scrollTo(currentPlayerPosition * 2, 0);
 
+
+}
+
+function cloudsMovimentation(state) {
+    let clouds = document.querySelector('.clouds-anim');
+
+    clouds.style.animationPlayState = state;
+
 }
 
 document.addEventListener('keypress', (key) => {
 
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
-        console.log()
+        let scrollSpacing = player.querySelector('.scroll-spacing')
         if (player.id == socket.id)
-            return player.querySelector('.scroll-spacing')
+            return scrollSpacing
     })[0];
     console.log(`%c Você pressionou uma tecla: ${socket.id}`, "background:red; color:white");
+
+    let currentPlayerPosition = yourPlayerElement.getBoundingClientRect().left
+
+    // movimentação das nuvens apenas quando o player estiver parado
+    if(currentPlayerPosition > 1200)
+        cloudsMovimentation('paused');
+
+    cloudsMovimentation('running');
+
 
     socket.emit('keypress', { key: key.code, id: socket.id })
     scrollFollowsPlayer(yourPlayerElement);
@@ -139,6 +154,7 @@ socket.on('player_move', (event) => {
 
     // character control
     const upDeslocation = 60;
+    const leftDeslocation = 8;
     const floorPosition = 11;
 
     const verticalDeslocationTransition = `0.30s ease-out`
@@ -166,14 +182,14 @@ socket.on('player_move', (event) => {
 
     function setCharacterPositionLeft() {
         let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
-        let newLeft = (Number(currentLeft) - 10)
+        let newLeft = (Number(currentLeft) - leftDeslocation)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         uniqueContainer.style.left = `${newLeft}px`;
     }
 
     function setCharacterPositionRight() {
         let currentRight = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
-        let newRight = (Number(currentRight) + 10)
+        let newRight = (Number(currentRight) + leftDeslocation)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         uniqueContainer.style.left = `${newRight}px`;
     }

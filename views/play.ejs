@@ -1,48 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link rel="stylesheet" href="../public/assets/css/normalize.css">
-    <link rel="stylesheet" href="../public/assets/css/basic.css">
-    <link rel="stylesheet" href="../public/assets/css/levels/start.css">
+    <link rel="stylesheet" href="../public/assets/css/normalize.css" />
+    <link rel="stylesheet" href="../public/assets/css/basic.css" />
+    <link rel="stylesheet" href="../public/assets/css/levels/start.css" />
 
     <script type="module" src="../public/assets/js/main.js"></script>
     <title><%= name %></title>
-</head>
-<body class="clouds-anim">
-    <root style="visibility: hidden;"><%= root %></root>
+  </head>
+  <body class="clouds-anim">
+    <root style="visibility: hidden"><%= root %></root>
     <connections>
-        Status:<br>
-        <li id="users">0 player(s)</li>
-        <ul id="list"></ul>
+      Status:<br />
+      <li id="users">0 player(s)</li>
+      <ul id="list"></ul>
     </connections>
 
     <share>
-        Seu IP<br>
-        <input type="text">
+      Seu IP<br />
+      <input type="text" />
     </share>
 
     <div class="buttons">
-        <button id="audio">
-           <img src="../public/assets/controls/sound.png">
-        </button>
+      <button id="audio">
+        <img src="../public/assets/controls/sound.png" />
+      </button>
     </div>
 
-    <img src="../public/assets/sprites/mountain-1.png" class="mountain back">
+    <img src="../public/assets/sprites/mountain-1.png" class="mountain back" />
 
-    <div class="players">
-    </div>
-    
+    <div class="players"></div>
 
-    <div class="cenario">
-    </div>
+    <div class="cenario"></div>
 
-    <credits onclick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')">
-        Drelocatelli
+    <credits
+      onclick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')"
+    >
+      Drelocatelli
     </credits>
     <script src="/socket.io/socket.io.js"></script>
     <script src="../public/assets/js/game_server.js"></script>
-</body>
+  </body>
 </html>

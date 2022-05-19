@@ -1,48 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link rel="stylesheet" href="../public/assets/css/normalize.css">
-    <link rel="stylesheet" href="../public/assets/css/basic.css">
-    <link rel="stylesheet" href="../public/assets/css/main-screen.css">
+    <link rel="stylesheet" href="../public/assets/css/normalize.css" />
+    <link rel="stylesheet" href="../public/assets/css/basic.css" />
+    <link rel="stylesheet" href="../public/assets/css/main-screen.css" />
 
     <script type="module" src="../public/assets/js/main.js"></script>
     <title><%= name %></title>
-</head>
-<body class="clouds-anim">
-    <root style="visibility: hidden;"><%= root %></root>
+  </head>
+  <body class="clouds-anim">
+    <root style="visibility: hidden"><%= root %></root>
 
     <div class="buttons">
-        <button id="audio">
-           <img src="../public/assets/controls/sound.png">
-        </button>
+      <button id="audio">
+        <img src="../public/assets/controls/sound.png" />
+      </button>
     </div>
 
     <div class="header">
-        <div class="header-title">
-            <img src="../public/assets/img/header.png">
-        </div>
+      <div class="header-title">
+        <img src="../public/assets/img/header.png" />
+      </div>
 
-        <div class="buttons">
-            <a href="/play">Jogar com amigos</a>
-        </div>
+      <div class="buttons">
+        <a href="/play">Jogar com amigos</a>
+      </div>
     </div>
 
-    <img src="../public/assets/sprites/mountain-1.png" class="mountain back">
+    <img src="../public/assets/sprites/mountain-1.png" class="mountain back" />
 
     <div class="mario"></div>
 
     <div class="enemy enemy-anim"></div>
 
-    <div class="cenario">
-    </div>
+    <div class="cenario"></div>
 
-    <credits onclick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')">
-        Drelocatelli
+    <credits
+      onclick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')"
+    >
+      Drelocatelli
     </credits>
     <script src="/socket.io/socket.io.js"></script>
     <script src="../public/assets/js/main.js"></script>
-</body>
+  </body>
 </html>

@@ -77,7 +77,7 @@ function cloudsMovimentation(state) {
 
 }
 
-document.addEventListener('keypress', (key) => {
+document.addEventListener('keydown', (key) => {
 
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
         let scrollSpacing = player.querySelector('.scroll-spacing')
@@ -93,6 +93,8 @@ document.addEventListener('keypress', (key) => {
         cloudsMovimentation('paused');
 
     cloudsMovimentation('running');
+
+    console.log(key.code)
 
 
     socket.emit('keypress', { key: key.code, id: socket.id })
@@ -116,12 +118,15 @@ socket.on('keypressed', event => {
     switch (event.key) {
         case 'Space':
         case 'KeyW':
+        case 'ArrowUp':
             socket.emit('player_movement', { position: 'up', id: event.id })
             break;
         case 'KeyA':
+        case 'ArrowLeft':
             socket.emit('player_movement', { position: 'left', id: event.id })
             break;
         case 'KeyD':
+        case 'ArrowRight':
             socket.emit('player_movement', { position: 'right', id: event.id })
             break;
     }

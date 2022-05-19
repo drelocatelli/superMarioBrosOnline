@@ -94,9 +94,6 @@ document.addEventListener('keydown', (key) => {
 
     cloudsMovimentation('running');
 
-    console.log(key.code)
-
-
     socket.emit('keypress', { key: key.code, id: socket.id })
     scrollFollowsPlayer(yourPlayerElement);
 

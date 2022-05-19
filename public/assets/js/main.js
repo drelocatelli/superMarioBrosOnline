@@ -7,6 +7,12 @@ class Game{
     }
 
     main(){
+        // all images pixelated
+        let allImgs = document.querySelectorAll('img');
+        Array.from(allImgs).map(img => {
+            img.style.imageRendering = 'pixelated'
+        });
+        
         this.play_song("default.mp3");
     }
 

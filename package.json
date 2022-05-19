@@ -2,8 +2,14 @@
   "name": "mariogame",
   "version": "1.0.0",
   "description": "https://user-images.githubusercontent.com/32282846/135005152-9ab47570-a6b2-4bb9-b92c-5c444bd9b918.mp4",
-  "main": "settings.js",
+  "main": "server.cjs",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
+    "dotenv": "^16.0.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "node": "^16.10.0",
@@ -12,10 +18,6 @@
   "devDependencies": {
     "nodemon": "^2.0.13",
     "requirejs": "^2.3.6"
-  },
-  "scripts": {
-    "start": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

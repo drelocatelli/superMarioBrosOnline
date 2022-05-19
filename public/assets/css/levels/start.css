@@ -93,7 +93,7 @@ img.player {
 
 
 connections{
-    position: absolute;
+    position: fixed;
     display:block;
     width:40vh;
     height:10vh;

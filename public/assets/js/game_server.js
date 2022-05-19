@@ -1,10 +1,7 @@
 const socket = io()
 
 let connectionsEl = document.querySelector('connections')
-
 let players = document.querySelector('.players')
-
-
 
 // get public ip
 let shareEl = document.querySelector('share').querySelector('input')
@@ -68,9 +65,26 @@ socket.on('logout', action => {
 
 // emite o evento de tecla pressionada para
 
+function scrollFollowsPlayer(playerElement) {
+    // console.log(uniqueContainer.style.left)
+    let scrollCurrentPosition = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollLimit = window.screen.availWidth || window.screen.width;
+    let currentPlayerPosition = playerElement.getBoundingClientRect().left;
+
+    window.scrollTo(currentPlayerPosition * 2, 0);
+
+}
+
 document.addEventListener('keypress', (key) => {
 
+    let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
+        if(player.id == socket.id)
+            return player
+    })[0];
+    console.log("Você pressionou uma tecla!");
+    
     socket.emit('keypress', { key: key.code, id: socket.id })
+    scrollFollowsPlayer(yourPlayerElement);
 
 })
 
@@ -154,7 +168,6 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionLeft() {
-        
         let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newLeft = (Number(currentLeft) - 10)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
@@ -162,12 +175,13 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionRight() {
-        
         let currentRight = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newRight = (Number(currentRight) + 10)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         uniqueContainer.style.left = `${newRight}px`;
     }
+
+    
 
 
 })

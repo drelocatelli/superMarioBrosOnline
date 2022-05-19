@@ -1,9 +1,25 @@
+ /*! transparent scroll */
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: transparent;
+    -webkit-box-shadow: none;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: none;
+}
+
 body{
+    overflow-x: scroll;
     padding:0;
     margin:0;
 }
 
 button{
+    position: fixed;
     cursor: pointer;
     background: #de5918;
     color: #ffffff;
@@ -14,19 +30,19 @@ button{
 }
 
 button#audio{
-    position:absolute;
+    position:fixed;
     right:0;
 }
 
 .back{
-    position: absolute;
+    position: fixed;
     bottom:10%;
     image-rendering: pixelated;
 }
 
 share{
     font-size:11px;
-    position: absolute;
+    position: fixed;
     left:50%;
     transform: translateX(-50%);
     top:8px;
@@ -52,7 +68,7 @@ share input{
 
 
 credits{
-    position: absolute;
+    position: fixed;
     bottom: 11.8%;
     cursor:pointer;
     right: 5px;
@@ -67,7 +83,7 @@ credits:hover{
 }
 
 .cenario {
-    position: absolute;
+    position: fixed;
     background-repeat: repeat-x;
     background-position-y: 58px;
     bottom: 0;

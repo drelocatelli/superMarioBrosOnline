@@ -111,20 +111,13 @@ function scrollFollowsPlayer(playerElement) {
 // retorno do back
 socket.on('changed_screen', (event) => {
 
-    console.log(event)
+    let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => { if (player.id === socket.id) return player })[0];
+    let yourCurrentScreen = event.find(player => player.id == socket.id)['screen']
 
-    console.log('ola')
-    
-    // evento no back
-    // socket.emit('change_screen', {player: socket.id, screen: '0'})
+    // set screen in don
+    if(yourPlayerElement.hasAttribute('screen'))
+        yourPlayerElement.setAttribute('screen', yourCurrentScreen)
 
-    // // set screen element
-    // let player = Array.from(document.querySelectorAll('.player-container')).map(p => {
-    //     if(p.id == event.player)
-    //         return p
-    // })[0]
-
-    // player.setAttribute('screen', event.screen)
 })
 
 function cloudsMovimentation(state) {
@@ -175,20 +168,21 @@ socket.on('keypressed', event => {
     let pcontainer = Array.from(playerContainer)
 
     let uniqueContainer = pcontainer.find(x => x.id === event.id)
+    let screen = uniqueContainer.getAttribute('screen')
 
     switch (event.key) {
         case 'Space':
         case 'KeyW':
         case 'ArrowUp':
-            socket.emit('player_movement', { position: 'up', id: event.id})
+            socket.emit('player_movement', { position: 'up', id: event.id, screen})
             break;
         case 'KeyA':
         case 'ArrowLeft':
-            socket.emit('player_movement', { position: 'left', id: event.id })
+            socket.emit('player_movement', { position: 'left', id: event.id, screen})
             break;
         case 'KeyD':
         case 'ArrowRight':
-            socket.emit('player_movement', { position: 'right', id: event.id })
+            socket.emit('player_movement', { position: 'right', id: event.id, screen })
             break;
     }
 
@@ -197,6 +191,8 @@ socket.on('keypressed', event => {
 
 socket.on('player_move', (event) => {
 
+    console.log(event)
+
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)
 
@@ -204,7 +200,7 @@ socket.on('player_move', (event) => {
 
     if (uniqueContainer == undefined) {
         players.innerHTML += `
-        <div class="player-container" id="${event.id}">
+        <div class="player-container" id="${event.id}" screen="${event.screen}">
         <span class="name">Player</span>
         
         <img src="../public/assets/sprites/mario-1.png" class="player">
@@ -219,7 +215,7 @@ socket.on('player_move', (event) => {
 
     // character control
     const upDeslocation = 60;
-    const leftDeslocation = 100;
+    const leftDeslocation = 8;
     const floorPosition = 11;
 
     const verticalDeslocationTransition = `0.30s ease-out`

@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "node .",
-    "dev": "nodemon -e js,ejs,html,cjs,json -w . -w public",
+    "dev": "nodemon -e .* -w . -w public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

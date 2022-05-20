@@ -65,7 +65,11 @@ function scrollFollowsPlayer(playerElement) {
     let scrollLimit = window.screen.availWidth || window.screen.width;
     let currentPlayerPosition = playerElement.getBoundingClientRect().left;
 
-    window.scrollTo(currentPlayerPosition * 2, 0);
+    window.scrollTo({
+        left: maxScrollLeft,
+        top: 0, 
+        behavior: 'smooth'
+    });
 
 
 }
@@ -172,7 +176,7 @@ socket.on('player_move', (event) => {
     const floorPosition = 11;
 
     const verticalDeslocationTransition = `0.30s ease-out`
-    const horizontalDeslocationTransition = `1s out`
+    const horizontalDeslocationTransition = `0.30ms`
 
     switch (event.position) {
         case 'up':
@@ -195,16 +199,16 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionLeft() {
+        uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newLeft = (Number(currentLeft) - leftDeslocation)
-        uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         uniqueContainer.style.left = `${newLeft}px`;
     }
 
     function setCharacterPositionRight() {
+        uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         let currentRight = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newRight = (Number(currentRight) + leftDeslocation)
-        uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         uniqueContainer.style.left = `${newRight}px`;
     }
 

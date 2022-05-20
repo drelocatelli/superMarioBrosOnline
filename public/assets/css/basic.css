@@ -83,13 +83,10 @@ credits:hover{
 }
 
 .cenario {
-    position: fixed;
+    background: url(../../sprites/terrain-2.png);
     background-repeat: repeat-x;
-    background-position-y: 58px;
-    bottom: 0;
-    height: 11vh;
-    width: 100%;
-    image-rendering: pixelated;
-    background-size: 3%;
+    background-size: 62px;
+    background-position-y: 30px;
+    width: 150000px;
+    position: absolute;
 }
-

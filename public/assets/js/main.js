@@ -8,10 +8,13 @@ class Game{
 
     main(){
         // all images pixelated
-        let allImgs = document.querySelectorAll('img');
-        Array.from(allImgs).map(img => {
-            img.style.imageRendering = 'pixelated'
-        });
+        setInterval(() => {
+            let allImgs = document.querySelectorAll('img');
+            Array.from(allImgs).map(img => {
+                img.style.imageRendering = 'pixelated'
+            });
+
+        }, 3000)
         
         this.play_song("default.mp3");
     }

@@ -30,6 +30,19 @@ class App {
 
     let users = 0;
 
+    let usersDetails = [];
+
+    function addOrReplaceusersDetails(event) {
+      const index = usersDetails.findIndex(el => el.id === event.id);
+
+      if (index !== -1) {
+        console.log('achou usuario')
+      } else {
+        usersDetails.push(event);
+      }
+      console.log(usersDetails)
+    }
+
     io.on("connection", (socket) => {
       users++;
 
@@ -38,6 +51,15 @@ class App {
       socket.on("disconnect", () => {
         users--;
         io.sockets.emit("logout", { users, id: socket.id });
+
+        // remove usuario
+        console.log('Saiu:', socket.id)
+        let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails))
+        removeOfUsersDetails = removeOfUsersDetails.filter(userDetail => userDetail.id != socket.id)
+        usersDetails = removeOfUsersDetails
+
+        console.log(usersDetails)
+        
       });
 
       socket.on("keypress", (event) => {
@@ -46,6 +68,11 @@ class App {
 
       socket.on("player_movement", (action) => {
         io.sockets.emit("player_move", action);
+      });
+
+      socket.on('change_screen', (action) => {
+        addOrReplaceusersDetails(action)
+        io.sockets.emit('changed_screen', usersDetails)
       });
     });
   }

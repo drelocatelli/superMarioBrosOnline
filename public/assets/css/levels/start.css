@@ -159,7 +159,7 @@ connections li{
 
 .cenario {
     background-repeat: repeat-x;
-    background-position-x: 0;
+    background-position-x: 0px;
     position: fixed;
     bottom: 0;
 }

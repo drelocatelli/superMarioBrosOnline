@@ -10,7 +10,6 @@ let request = new Request('https://api.ipify.org?format=json', {
     method: 'GET',
 });
 
-
 shareEl.onmouseenter = function (e) {
     e.target.select()
     document.execCommand('copy')
@@ -27,7 +26,7 @@ socket.on('login', action => {
     // seta player na tela
 
     player.push(`
-    <div class="player-container" id="${action.id}">
+    <div class="player-container" id="${action.id}" screen="0">
         <div class="scroll-spacing"></div>
             <span class="name">Player</span>
             <img src="../public/assets/sprites/mario-1.png" class="player">
@@ -39,6 +38,10 @@ socket.on('login', action => {
     })
 
     console.log(`%c Entrou no game: ${action.id}`, "background:green; color:white;")
+
+    let newPlayerScreen = {id: socket.id, screen: 0}
+
+    socket.emit('change_screen', newPlayerScreen);
 
 })
 
@@ -94,11 +97,35 @@ function scrollFollowsPlayer(playerElement) {
 
         })
     } else {
+        // change screen
+        let newPlayerScreen = {id: socket.id}
+        // evento no front
+        socket.emit('change_screen', newPlayerScreen);
         // move player to start
         yourPlayerElement.style.left = '0px';
+
     }
 
 }
+
+// retorno do back
+socket.on('changed_screen', (event) => {
+
+    console.log(event)
+
+    console.log('ola')
+    
+    // evento no back
+    // socket.emit('change_screen', {player: socket.id, screen: '0'})
+
+    // // set screen element
+    // let player = Array.from(document.querySelectorAll('.player-container')).map(p => {
+    //     if(p.id == event.player)
+    //         return p
+    // })[0]
+
+    // player.setAttribute('screen', event.screen)
+})
 
 function cloudsMovimentation(state) {
     let clouds = document.querySelector('.clouds-anim');
@@ -135,9 +162,10 @@ document.addEventListener('keydown', (key) => {
 
 })
 
-socket.on('connected', (socket) => {
-    io.sockets.emit('login', { users, id: socket.id });
-})
+// socket.on('connected', (socket) => {
+//     io.sockets.emit('change_screen', {player: socket.id, screen: '0'})
+//     io.sockets.emit('login', { users, id: socket.id });
+// })
 
 socket.on('keypressed', event => {
 
@@ -152,7 +180,7 @@ socket.on('keypressed', event => {
         case 'Space':
         case 'KeyW':
         case 'ArrowUp':
-            socket.emit('player_movement', { position: 'up', id: event.id })
+            socket.emit('player_movement', { position: 'up', id: event.id})
             break;
         case 'KeyA':
         case 'ArrowLeft':
@@ -168,7 +196,6 @@ socket.on('keypressed', event => {
 
 
 socket.on('player_move', (event) => {
-
 
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)
@@ -192,7 +219,7 @@ socket.on('player_move', (event) => {
 
     // character control
     const upDeslocation = 60;
-    const leftDeslocation = 3;
+    const leftDeslocation = 100;
     const floorPosition = 11;
 
     const verticalDeslocationTransition = `0.30s ease-out`
@@ -232,8 +259,5 @@ socket.on('player_move', (event) => {
         let newRight = (Number(currentRight) + leftDeslocation)
         uniqueContainer.style.left = `${newRight}px`;
     }
-
-
-
 
 })

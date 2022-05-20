@@ -15,6 +15,9 @@ class Game{
             });
 
         }, 3000)
+
+        // set map size
+        let scene = document.querySelector('.cenario')
         
         this.play_song("default.mp3");
     }

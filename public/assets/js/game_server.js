@@ -61,16 +61,42 @@ socket.on('logout', action => {
 
 // emite o evento de tecla pressionada para
 function scrollFollowsPlayer(playerElement) {
-    let scrollCurrentPosition = window.pageYOffset || document.documentElement.scrollTop;
-    let scrollLimit = window.screen.availWidth || window.screen.width;
+    let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
+        if (player.id === socket.id)
+            return player
+    })[0];
+    let maxEdge = window.outerWidth - 80;
     let currentPlayerPosition = playerElement.getBoundingClientRect().left;
 
-    window.scrollTo({
-        left: maxScrollLeft,
-        top: 0, 
-        behavior: 'smooth'
-    });
+    if (currentPlayerPosition <= maxEdge) {
+        // items that can move
+        let itemsCanMove = ['.mountain', '.cenario']
 
+        itemsCanMove.map(item => {
+            let itemContent = document.querySelector(item)
+
+            // clona o objeto sem mudar o original
+            switch (itemContent.nodeName) {
+                case 'IMG':
+                    let currentPositionImg = parseInt(getComputedStyle(itemContent).left.match(/[0-9]{1,2000}/)[0]);
+                    let newPositionImg = JSON.parse(JSON.stringify(currentPositionImg));
+                    newPositionImg += 1;
+                    itemContent.style.left = `-${newPositionImg}px`;
+                    break;
+                case 'DIV':
+                    let currentPosition = parseInt(getComputedStyle(itemContent).backgroundPositionX.match(/[0-9]{1,2000}/)[0]);
+                    let newPosition = JSON.parse(JSON.stringify(currentPosition));
+                    newPosition += 1;
+                    itemContent.style.left = `-${newPosition}px`;
+                    break;
+            }
+
+
+        })
+    } else {
+        // move player to start
+        yourPlayerElement.style.left = '0px';
+    }
 
 }
 
@@ -81,19 +107,14 @@ function cloudsMovimentation(state) {
 
 }
 
-//! eventos mobile
-// document.ontouchmove = function(event) {
-//     let touchUp = event.changedTouches[0].clientY > 500 && event.changedTouches[0].clientY < 600;
-//     let touchLeft = event.changedTouches[0].clientX >= 700;
-
-//     if(touchUp) {
-//         socket.emit('keypress', { key: 'ArrowUp', id: socket.id })
-//     } else if(touchLeft) {
-//         socket.emit('keypress', { key: 'ArrowRight', id: socket.id })
-//     }
-// }
-
 document.addEventListener('keydown', (key) => {
+
+    // disable keys scrolling
+    window.addEventListener("keydown", function (e) {
+        if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "KeyA", "KeyD",].indexOf(e.code) > -1) {
+            e.preventDefault();
+        }
+    }, false);
 
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
         let scrollSpacing = player.querySelector('.scroll-spacing')
@@ -105,13 +126,12 @@ document.addEventListener('keydown', (key) => {
     let currentPlayerPosition = yourPlayerElement.getBoundingClientRect().left
 
     // movimentação das nuvens apenas quando o player estiver parado
-    if(currentPlayerPosition > 1200)
+    if (currentPlayerPosition > 1200)
         cloudsMovimentation('paused');
 
     cloudsMovimentation('running');
 
     socket.emit('keypress', { key: key.code, id: socket.id })
-    scrollFollowsPlayer(yourPlayerElement);
 
 })
 
@@ -172,7 +192,7 @@ socket.on('player_move', (event) => {
 
     // character control
     const upDeslocation = 60;
-    const leftDeslocation = 8;
+    const leftDeslocation = 3;
     const floorPosition = 11;
 
     const verticalDeslocationTransition = `0.30s ease-out`
@@ -187,6 +207,7 @@ socket.on('player_move', (event) => {
             break;
         case 'right':
             setCharacterPositionRight()
+            scrollFollowsPlayer(currentContainer);
             break;
     }
 

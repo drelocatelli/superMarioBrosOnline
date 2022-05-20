@@ -77,11 +77,23 @@ function cloudsMovimentation(state) {
 
 }
 
+//! eventos mobile
+// document.ontouchmove = function(event) {
+//     let touchUp = event.changedTouches[0].clientY > 500 && event.changedTouches[0].clientY < 600;
+//     let touchLeft = event.changedTouches[0].clientX >= 700;
+
+//     if(touchUp) {
+//         socket.emit('keypress', { key: 'ArrowUp', id: socket.id })
+//     } else if(touchLeft) {
+//         socket.emit('keypress', { key: 'ArrowRight', id: socket.id })
+//     }
+// }
+
 document.addEventListener('keydown', (key) => {
 
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
         let scrollSpacing = player.querySelector('.scroll-spacing')
-        if (player.id == socket.id)
+        if (player.id === socket.id)
             return scrollSpacing
     })[0];
     console.log(`%c Você pressionou uma tecla: ${socket.id}`, "background:red; color:white");

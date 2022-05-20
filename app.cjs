@@ -18,7 +18,6 @@ class App {
     const io = socketio(this.server);
     let game = "Super Mario Bros Online";
     const views_path = join(__dirname, `/views`);
-    console.log(views_path);
     this.#express.set("view engine", "ejs");
     this.#express.use("/public", express.static("public"));
 

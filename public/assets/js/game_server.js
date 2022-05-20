@@ -41,7 +41,7 @@ socket.on('login', action => {
 
     let newPlayerScreen = {id: socket.id, screen: 0}
 
-    socket.emit('change_screen', newPlayerScreen);
+    socket.emit('set_user_details', newPlayerScreen);
 
 })
 

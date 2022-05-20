@@ -35,21 +35,17 @@ class App {
     function addOrReplaceusersDetails(event) {
       const index = usersDetails.findIndex(el => el.id === event.id);
 
-      if (index !== -1) {
-        // troca screen do usuario existente
-        let newUsersDetails = usersDetails.filter(userDetail => {
-          if(userDetail.id == event.id) {
-            userDetail.screen += 1
-          }
-        })
-        // console.log(newUsersDetails)
-        // usersDetails = newUsersDetails
-      } else {
+      if (index == -1) {
         // adiciona usuario se nao existir
         usersDetails.push(event);
       }
+    }
 
-      console.log(usersDetails)
+    function setUserScreen(event) {
+      usersDetails = usersDetails.filter(detail => 
+        (detail.id === event.id) ? detail.screen += 1 : detail.screen
+      )
+
     }
 
     io.on("connection", (socket) => {
@@ -69,6 +65,10 @@ class App {
         
       });
 
+      socket.on('set_user_details', (event) => {
+        addOrReplaceusersDetails(event)
+      })
+
       socket.on("keypress", (event) => {
         io.sockets.emit("keypressed", event);
       });
@@ -78,7 +78,7 @@ class App {
       });
 
       socket.on('change_screen', (action) => {
-        addOrReplaceusersDetails(action)
+        setUserScreen(action)
         io.sockets.emit('changed_screen', usersDetails)
       });
     });

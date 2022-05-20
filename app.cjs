@@ -36,10 +36,19 @@ class App {
       const index = usersDetails.findIndex(el => el.id === event.id);
 
       if (index !== -1) {
-        console.log('achou usuario')
+        // troca screen do usuario existente
+        let newUsersDetails = usersDetails.filter(userDetail => {
+          if(userDetail.id == event.id) {
+            userDetail.screen += 1
+          }
+        })
+        // console.log(newUsersDetails)
+        // usersDetails = newUsersDetails
       } else {
+        // adiciona usuario se nao existir
         usersDetails.push(event);
       }
+
       console.log(usersDetails)
     }
 
@@ -57,8 +66,6 @@ class App {
         let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails))
         removeOfUsersDetails = removeOfUsersDetails.filter(userDetail => userDetail.id != socket.id)
         usersDetails = removeOfUsersDetails
-
-        console.log(usersDetails)
         
       });
 

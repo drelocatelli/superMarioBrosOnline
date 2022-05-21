@@ -50,7 +50,7 @@ class App {
     })
 
     let usersDetails = [];
-    let hostDetails = {}
+    let hostDetails = {};
 
     function addOrReplaceusersDetails(event) {
       const index = usersDetails.findIndex(el => el.id === event.id);
@@ -72,7 +72,10 @@ class App {
     io.on("connection", (socket) => {
       let users = io.engine.clientsCount;
 
-      io.sockets.emit("login", { users, id: socket.id });
+      let newConnection = (socket.handshake.address == '::1') ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
+      console.log("\nUsuário conectado:", newConnection);
+
+      io.sockets.emit("login", { users, id: socket.id, ip: newConnection });
 
       socket.on("disconnect", () => {
         users--;
@@ -85,6 +88,12 @@ class App {
         usersDetails = removeOfUsersDetails
         
       });
+
+      socket.on('set_host_details', (event) => {
+        hostDetails = event
+        console.log('HOST: ', hostDetails)
+        io.sockets.emit('host_setted', hostDetails)
+      })
 
       socket.on('set_user_details', (event) => {
         addOrReplaceusersDetails(event)

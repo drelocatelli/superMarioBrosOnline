@@ -3,7 +3,12 @@ const socket = io()
 let connectionsEl = document.querySelector('connections')
 let players = document.querySelector('.players')
 
+var host = {}
 
+socket.on('host_setted', (event) => {
+    // set host on front
+    host = event
+})
 
 // player logado
 socket.on('login', action => {
@@ -18,14 +23,24 @@ socket.on('login', action => {
     <div class="player-container" id="${action.id}" screen="0">
         <div class="scroll-spacing"></div>
             <span class="name">Player</span>
-            <img src="../public/assets/sprites/mario-1.png" class="player">
+            <img src="../public/assets/sprites/luigi-1.png" class="player">
     </div>
             `)
 
     player.forEach(player => {
         players.innerHTML += player
     })
+    // identifica o host
+    if(action.ip === '127.0.0.1') {
+        host = action
+        socket.emit('set_host_details', action)
 
+        // seta host pra mario
+        let hostContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id == action.id)
+
+        hostContainer.querySelector('img').src = '../public/assets/sprites/mario-1.png'
+    }
+    
     console.log(`%c Entrou no game: ${action.id}`, "background:green; color:white;")
 
     let newPlayerScreen = { id: socket.id, screen: 0 }

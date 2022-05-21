@@ -78,7 +78,9 @@ function scrollFollowsHost(playerElement, mouseEvent) {
     let HostPosition = hostElement.querySelector('img').getBoundingClientRect().left;
 
     const imgDeslocation = 3;
-
+    
+    // quando o host se mexer
+    if(mouseEvent.hostId === mouseEvent.id)
     if (HostPosition < maxEdge) {
         // items that can move
         let itemsCanMove = ['.mountain', '.cenario']
@@ -110,7 +112,6 @@ function scrollFollowsHost(playerElement, mouseEvent) {
         // evento no front
         socket.emit('change_screen', newPlayerScreen);
         // move all players to start
-        console.log(othersPlayersElements)
         othersPlayersElements.forEach(otherPlayer => {
             otherPlayer.style.left = '0px'
         })

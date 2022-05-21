@@ -104,8 +104,6 @@ function scrollFollowsPlayer(playerElement) {
 // retorno do back
 socket.on('changed_screen', (event) => {
 
-    console.log(event)
-
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => { if (player.id === socket.id) return player })[0];
     let yourCurrentScreen = event.find(player => player.id == socket.id)['screen']
 
@@ -126,7 +124,6 @@ function cloudsMovimentation(state) {
 }
 
 document.addEventListener('keydown', (key) => {
-
     // disable keys scrolling
     window.addEventListener("keydown", function (e) {
         if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "KeyA", "KeyD",].indexOf(e.code) > -1) {
@@ -149,7 +146,7 @@ document.addEventListener('keydown', (key) => {
 
     cloudsMovimentation('running');
 
-    socket.emit('keypress', { key: key.code, id: socket.id })
+    socket.emit('keypress', { key: key.code, id: socket.id, shiftKey: key.shiftKey })
 
 })
 
@@ -172,15 +169,15 @@ socket.on('keypressed', event => {
         case 'Space':
         case 'KeyW':
         case 'ArrowUp':
-            socket.emit('player_movement', { position: 'up', id: event.id, screen })
+            socket.emit('player_movement', { position: 'up', shiftKey: event.shiftKey, id: event.id, screen })
             break;
         case 'KeyA':
         case 'ArrowLeft':
-            socket.emit('player_movement', { position: 'left', id: event.id, screen })
+            socket.emit('player_movement', { position: 'left', shiftKey: event.shiftKey, id: event.id, screen })
             break;
         case 'KeyD':
         case 'ArrowRight':
-            socket.emit('player_movement', { position: 'right', id: event.id, screen })
+            socket.emit('player_movement', { position: 'right', shiftKey: event.shiftKey, id: event.id, screen })
             break;
     }
 
@@ -188,6 +185,8 @@ socket.on('keypressed', event => {
 
 
 socket.on('player_move', (event) => {
+
+    console.log(event)
 
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)
@@ -210,33 +209,74 @@ socket.on('player_move', (event) => {
     currentContainer.style.zIndex = '2'
 
     // character control
-    const upDeslocation = 60;
+    const upDeslocation = 80;
     const leftDeslocation = 8;
     const floorPosition = 11;
 
-    const verticalDeslocationTransition = `0.30s ease-out`
+    const verticalDeslocationTransition = `0.3s ease-out`
     const horizontalDeslocationTransition = `0.30ms`
 
-    switch (event.position) {
-        case 'up':
-            setCharacterPositionUP()
-            break;
-        case 'left':
+    if (event.shiftKey) { 
+        // salto e lado
+        switch (event.position) {
+            case 'left':
+                setCharacterPositionUPShift('left')
+                break;
+            case 'right':
+                setCharacterPositionUPShift('right')
+                scrollFollowsPlayer(currentContainer);
+                break;
+        }
+    } else {
+
+        switch (event.position) {
+            case 'up':
+                setCharacterPositionUP()
+                break;
+            case 'left':
+                setCharacterPositionLeft()
+                break;
+            case 'right':
+                setCharacterPositionRight()
+                scrollFollowsPlayer(currentContainer);
+                break;
+        }
+    }
+
+    // pula para cima e anda
+    function setCharacterPositionUPShift(position) {
+
+        uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
+        let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
+        let newLeft = (Number(currentLeft) - leftDeslocation)
+        uniqueContainer.style.left = `${newLeft}px`;
+
+        let currentUp = uniqueContainer.style.bottom.match(/[0-9]*/)[0]
+
+        // pula
+        if (currentUp > floorPosition && currentUp <= upDeslocation) return;
+
+        uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
+        uniqueContainer.style.bottom = `${upDeslocation}%`
+        setTimeout(() => {
+            uniqueContainer.style.bottom = `${floorPosition}%`
+        }, 200)
+
+
+        if(position === 'left') {
             setCharacterPositionLeft()
-            break;
-        case 'right':
+
+        } else if(position === 'right') {
             setCharacterPositionRight()
-            scrollFollowsPlayer(currentContainer);
-            break;
+        }
+
     }
 
     function setCharacterPositionUP() {
         let currentUp = uniqueContainer.style.bottom.match(/[0-9]*/)[0]
 
-        console.log(currentUp)
-
         // evita salto duplo
-        if(currentUp > floorPosition && currentUp <= upDeslocation) return;
+        if (currentUp > floorPosition && currentUp <= upDeslocation) return;
 
         uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
         uniqueContainer.style.bottom = `${upDeslocation}%`
@@ -247,10 +287,12 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionLeft() {
+
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newLeft = (Number(currentLeft) - leftDeslocation)
         uniqueContainer.style.left = `${newLeft}px`;
+
     }
 
     function setCharacterPositionRight() {

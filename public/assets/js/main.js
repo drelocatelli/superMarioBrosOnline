@@ -30,7 +30,7 @@ class Game{
         document.onkeydown = (e) => {
 
             // salto
-            if(["Space", "ArrowUp", "KeyW"].indexOf(e.code) > -1) this.play_song('smb_jump-small.wav')
+            if(["Space", "ArrowUp", "KeyW"].indexOf(e.code) > -1) this.play_song('smb_jump-small.ogg')
             
         };
     }

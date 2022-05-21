@@ -186,8 +186,6 @@ socket.on('keypressed', event => {
 
 socket.on('player_move', (event) => {
 
-    console.log(event)
-
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)
 

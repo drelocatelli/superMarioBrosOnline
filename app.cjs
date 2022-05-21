@@ -49,9 +49,8 @@ class App {
 
     })
 
-    let users = 0;
-
     let usersDetails = [];
+    let hostDetails = {}
 
     function addOrReplaceusersDetails(event) {
       const index = usersDetails.findIndex(el => el.id === event.id);
@@ -71,7 +70,7 @@ class App {
     }
 
     io.on("connection", (socket) => {
-      users++;
+      let users = io.engine.clientsCount;
 
       io.sockets.emit("login", { users, id: socket.id });
 

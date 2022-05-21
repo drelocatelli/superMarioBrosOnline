@@ -4,10 +4,12 @@
   "description": "https://user-images.githubusercontent.com/32282846/135005152-9ab47570-a6b2-4bb9-b92c-5c444bd9b918.mp4",
   "main": "server.cjs",
   "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "ip": "^1.1.8",
     "node": "^16.10.0",
-    "dotenv": "^16.0.1",
     "socket.io": "^4.2.0"
   },
   "devDependencies": {

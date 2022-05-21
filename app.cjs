@@ -3,6 +3,8 @@ const socketio = require("socket.io");
 const path = require("path");
 const http = require("http");
 const { join } = require("path");
+const ip = require("ip");
+const axios = require('axios')
 
 class App {
   #express;
@@ -27,6 +29,25 @@ class App {
     this.#express.get("/play", function (req, res) {
       res.render("play", { name: game, root: path.resolve(path.dirname("")) });
     });
+
+    this.#express.get('/ip', (req, res) => {
+
+      axios({
+        method: 'get',
+        url: 'https://api.ipify.org?format=json'
+      }).then(response => {
+        return res.json(
+          {
+            publicIp: response.data.ip, 
+            privateIp: ip.address(),
+            isPrivate: ip.isPrivate(response.data.ip)
+          });
+
+      }).catch(err => {
+        console.log(err)
+      })
+
+    })
 
     let users = 0;
 

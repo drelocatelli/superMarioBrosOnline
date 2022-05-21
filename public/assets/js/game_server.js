@@ -3,17 +3,7 @@ const socket = io()
 let connectionsEl = document.querySelector('connections')
 let players = document.querySelector('.players')
 
-// get public ip
-let shareEl = document.querySelector('share').querySelector('input')
 
-let request = new Request('https://api.ipify.org?format=json', {
-    method: 'GET',
-});
-
-shareEl.onmouseenter = function (e) {
-    e.target.select()
-    document.execCommand('copy')
-}
 
 // player logado
 socket.on('login', action => {

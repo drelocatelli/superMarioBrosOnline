@@ -100,11 +100,11 @@ class App {
       })
 
       socket.on("keypress", (event) => {
-        io.sockets.emit("keypressed", event);
+        io.sockets.emit("keypressed", {...event, hostId: hostDetails.id});
       });
 
       socket.on("player_movement", (action) => {
-        io.sockets.emit("player_move", action);
+        io.sockets.emit("player_move", {...action, hostId: hostDetails.id});
       });
 
       socket.on('change_screen', (action) => {

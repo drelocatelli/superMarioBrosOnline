@@ -69,14 +69,11 @@ socket.on('logout', action => {
 
 })
 
-function scrollFollowsHost(playerElement) {
-    console.log(host)
+function scrollFollowsHost(playerElement, mouseEvent) {
 
-    let hostElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
-        if (player.id === host.id)
-            return player
-    })[0];
-    let othersPlayersElements = Array.from(document.querySelectorAll(`div.player-container`)).filter(player => player.id != host.id)
+    let hostElement = Array.from(document.querySelectorAll(`div.player-container`)).find(player => player.id == mouseEvent.hostId);
+    let othersPlayersElements = Array.from(document.querySelectorAll(`div.player-container`)).filter(player => player.id != mouseEvent.hostId)
+
     let maxEdge = document.querySelector('.maxEdge').getBoundingClientRect().left;
     let HostPosition = hostElement.querySelector('img').getBoundingClientRect().left;
 
@@ -113,6 +110,7 @@ function scrollFollowsHost(playerElement) {
         // evento no front
         socket.emit('change_screen', newPlayerScreen);
         // move all players to start
+        console.log(othersPlayersElements)
         othersPlayersElements.forEach(otherPlayer => {
             otherPlayer.style.left = '0px'
         })
@@ -125,15 +123,7 @@ function scrollFollowsHost(playerElement) {
 // retorno do back
 socket.on('changed_screen', (event) => {
 
-    let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => { if (player.id === socket.id) return player })[0];
-    let yourCurrentScreen = event.find(player => player.id == socket.id)['screen']
-
-    // set screen in don
-    if (yourPlayerElement.hasAttribute('screen'))
-        yourPlayerElement.setAttribute('screen', yourCurrentScreen)
-
-
-    setScreenVisibility()
+    console.log('screen changed')
 
 })
 
@@ -243,7 +233,7 @@ socket.on('player_move', (event) => {
                 break;
             case 'right':
                 setCharacterPositionUPShift('right')
-                scrollFollowsHost(currentContainer);
+                scrollFollowsHost(currentContaine, event);
                 break;
         }
     } else {
@@ -257,7 +247,7 @@ socket.on('player_move', (event) => {
                 break;
             case 'right':
                 setCharacterPositionRight()
-                scrollFollowsHost(currentContainer);
+                scrollFollowsHost(currentContainer, event);
                 break;
         }
     }
@@ -336,15 +326,18 @@ var setScreenVisibility = () => {
         // se você estiver na frente
         if (yourPlayerScreen > otherPlayerScreen) {
             otherPlayer.style.opacity = '0.25'
-
+            setTimeout(() => {
+                otherPlayer.style.opacity = '1'
+            }, 300)
         } else if (yourPlayerScreen < otherPlayerScreen) {
             // se voce estiver atras
             otherPlayer.style.opacity = '0.25'
+            setTimeout(() => {
+                otherPlayer.style.opacity = '1'
+            }, 300)
         } else if (yourPlayerScreen == otherPlayerScreen) {
             // screens iguais
             otherPlayer.style.opacity = '1'
-            yourPlayerScreen.style.opacity = '1'
-
         }
 
     })

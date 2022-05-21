@@ -78,6 +78,16 @@ function scrollFollowsHost(playerElement, mouseEvent) {
     let HostPosition = hostElement.querySelector('img').getBoundingClientRect().left;
 
     const imgDeslocation = 3;
+
+
+    // set max edge for you, basic player 
+    if(mouseEvent.hostId !== mouseEvent.id) {
+        let yourPlayerElement = othersPlayersElements.find(player => player.id == mouseEvent.id)
+        let yourPosition = yourPlayerElement.querySelector('img').getBoundingClientRect().left;
+        if(yourPosition > maxEdge) {
+            yourPlayerElement.style.left = '0px'
+        }
+    }
     
     // quando o host se mexer
     if(mouseEvent.hostId === mouseEvent.id)

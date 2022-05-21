@@ -15,7 +15,6 @@ shareEl.onmouseenter = function (e) {
     document.execCommand('copy')
 }
 
-
 // player logado
 socket.on('login', action => {
     connectionsEl.querySelector('li#users').innerHTML = `<li>${action.users} player(s)</li>`
@@ -43,6 +42,8 @@ socket.on('login', action => {
 
     socket.emit('set_user_details', newPlayerScreen);
 
+    setScreenVisibility();
+
 })
 
 // remove player
@@ -68,8 +69,10 @@ function scrollFollowsPlayer(playerElement) {
         if (player.id === socket.id)
             return player
     })[0];
-    let maxEdge = window.outerWidth - 80;
-    let currentPlayerPosition = playerElement.getBoundingClientRect().left;
+    let maxEdge = document.querySelector('.maxEdge').getBoundingClientRect().left;
+    let currentPlayerPosition = playerElement.querySelector('img').getBoundingClientRect().left;
+
+    const imgDeslocation = 3;
 
     if (currentPlayerPosition <= maxEdge) {
         // items that can move
@@ -83,13 +86,13 @@ function scrollFollowsPlayer(playerElement) {
                 case 'IMG':
                     let currentPositionImg = parseInt(getComputedStyle(itemContent).left.match(/[0-9]{1,2000}/)[0]);
                     let newPositionImg = JSON.parse(JSON.stringify(currentPositionImg));
-                    newPositionImg += 1;
+                    newPositionImg += imgDeslocation;
                     itemContent.style.left = `-${newPositionImg}px`;
                     break;
                 case 'DIV':
                     let currentPosition = parseInt(getComputedStyle(itemContent).backgroundPositionX.match(/[0-9]{1,2000}/)[0]);
                     let newPosition = JSON.parse(JSON.stringify(currentPosition));
-                    newPosition += 1;
+                    newPosition += imgDeslocation;
                     itemContent.style.left = `-${newPosition}px`;
                     break;
             }
@@ -111,12 +114,17 @@ function scrollFollowsPlayer(playerElement) {
 // retorno do back
 socket.on('changed_screen', (event) => {
 
+    console.log(event)
+
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => { if (player.id === socket.id) return player })[0];
     let yourCurrentScreen = event.find(player => player.id == socket.id)['screen']
 
     // set screen in don
     if(yourPlayerElement.hasAttribute('screen'))
         yourPlayerElement.setAttribute('screen', yourCurrentScreen)
+
+
+    setScreenVisibility()
 
 })
 
@@ -191,8 +199,6 @@ socket.on('keypressed', event => {
 
 socket.on('player_move', (event) => {
 
-    console.log(event)
-
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)
 
@@ -257,3 +263,31 @@ socket.on('player_move', (event) => {
     }
 
 })
+
+var setScreenVisibility = () => {
+
+    let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).find(player => player.id === socket.id);
+    let othersPlayerElements = Array.from(document.querySelectorAll(`div.player-container`)).filter(player => player.id != socket.id)
+
+    let yourPlayerScreen  = parseInt(yourPlayerElement.getAttribute('screen'));
+
+    othersPlayerElements.forEach(otherPlayer => {
+        let otherPlayerScreen = parseInt(otherPlayer.getAttribute('screen'))
+        
+        // se você estiver na frente
+        if(yourPlayerScreen > otherPlayerScreen) {
+            otherPlayer.style.opacity = '0.25'
+
+        } else if (yourPlayerScreen < otherPlayerScreen) {
+            // se voce estiver atras
+            otherPlayer.style.opacity = '0.25'
+        } else if(yourPlayerScreen == otherPlayerScreen) {
+            // screens iguais
+            otherPlayer.style.opacity = '1'
+            yourPlayerScreen.style.opacity = '1'
+            
+        }
+        
+    })
+    
+}

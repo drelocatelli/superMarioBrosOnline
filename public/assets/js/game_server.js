@@ -51,6 +51,7 @@ socket.on('login', action => {
 
 })
 
+
 // remove player
 socket.on('logout', action => {
 
@@ -68,18 +69,20 @@ socket.on('logout', action => {
 
 })
 
-// emite o evento de tecla pressionada para
-function scrollFollowsPlayer(playerElement) {
-    let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
-        if (player.id === socket.id)
+function scrollFollowsHost(playerElement) {
+    console.log(host)
+
+    let hostElement = Array.from(document.querySelectorAll(`div.player-container`)).map(player => {
+        if (player.id === host.id)
             return player
     })[0];
+    let othersPlayersElements = Array.from(document.querySelectorAll(`div.player-container`)).filter(player => player.id != host.id)
     let maxEdge = document.querySelector('.maxEdge').getBoundingClientRect().left;
-    let currentPlayerPosition = playerElement.querySelector('img').getBoundingClientRect().left;
+    let HostPosition = hostElement.querySelector('img').getBoundingClientRect().left;
 
     const imgDeslocation = 3;
 
-    if (currentPlayerPosition <= maxEdge) {
+    if (HostPosition < maxEdge) {
         // items that can move
         let itemsCanMove = ['.mountain', '.cenario']
 
@@ -109,8 +112,11 @@ function scrollFollowsPlayer(playerElement) {
         let newPlayerScreen = { id: socket.id }
         // evento no front
         socket.emit('change_screen', newPlayerScreen);
-        // move player to start
-        yourPlayerElement.style.left = '0px';
+        // move all players to start
+        othersPlayersElements.forEach(otherPlayer => {
+            otherPlayer.style.left = '0px'
+        })
+        hostElement.style.left = '0px';
 
     }
 
@@ -237,7 +243,7 @@ socket.on('player_move', (event) => {
                 break;
             case 'right':
                 setCharacterPositionUPShift('right')
-                scrollFollowsPlayer(currentContainer);
+                scrollFollowsHost(currentContainer);
                 break;
         }
     } else {
@@ -251,7 +257,7 @@ socket.on('player_move', (event) => {
                 break;
             case 'right':
                 setCharacterPositionRight()
-                scrollFollowsPlayer(currentContainer);
+                scrollFollowsHost(currentContainer);
                 break;
         }
     }

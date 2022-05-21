@@ -28,7 +28,7 @@ socket.on('login', action => {
 
     console.log(`%c Entrou no game: ${action.id}`, "background:green; color:white;")
 
-    let newPlayerScreen = {id: socket.id, screen: 0}
+    let newPlayerScreen = { id: socket.id, screen: 0 }
 
     socket.emit('set_user_details', newPlayerScreen);
 
@@ -91,7 +91,7 @@ function scrollFollowsPlayer(playerElement) {
         })
     } else {
         // change screen
-        let newPlayerScreen = {id: socket.id}
+        let newPlayerScreen = { id: socket.id }
         // evento no front
         socket.emit('change_screen', newPlayerScreen);
         // move player to start
@@ -110,7 +110,7 @@ socket.on('changed_screen', (event) => {
     let yourCurrentScreen = event.find(player => player.id == socket.id)['screen']
 
     // set screen in don
-    if(yourPlayerElement.hasAttribute('screen'))
+    if (yourPlayerElement.hasAttribute('screen'))
         yourPlayerElement.setAttribute('screen', yourCurrentScreen)
 
 
@@ -172,11 +172,11 @@ socket.on('keypressed', event => {
         case 'Space':
         case 'KeyW':
         case 'ArrowUp':
-            socket.emit('player_movement', { position: 'up', id: event.id, screen})
+            socket.emit('player_movement', { position: 'up', id: event.id, screen })
             break;
         case 'KeyA':
         case 'ArrowLeft':
-            socket.emit('player_movement', { position: 'left', id: event.id, screen})
+            socket.emit('player_movement', { position: 'left', id: event.id, screen })
             break;
         case 'KeyD':
         case 'ArrowRight':
@@ -231,11 +231,19 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionUP() {
+        let currentUp = uniqueContainer.style.bottom.match(/[0-9]*/)[0]
+
+        console.log(currentUp)
+
+        // evita salto duplo
+        if(currentUp > floorPosition && currentUp <= upDeslocation) return;
+
         uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
         uniqueContainer.style.bottom = `${upDeslocation}%`
         setTimeout(() => {
             uniqueContainer.style.bottom = `${floorPosition}%`
         }, 200)
+
     }
 
     function setCharacterPositionLeft() {
@@ -259,25 +267,25 @@ var setScreenVisibility = () => {
     let yourPlayerElement = Array.from(document.querySelectorAll(`div.player-container`)).find(player => player.id === socket.id);
     let othersPlayerElements = Array.from(document.querySelectorAll(`div.player-container`)).filter(player => player.id != socket.id)
 
-    let yourPlayerScreen  = parseInt(yourPlayerElement.getAttribute('screen'));
+    let yourPlayerScreen = parseInt(yourPlayerElement.getAttribute('screen'));
 
     othersPlayerElements.forEach(otherPlayer => {
         let otherPlayerScreen = parseInt(otherPlayer.getAttribute('screen'))
-        
+
         // se você estiver na frente
-        if(yourPlayerScreen > otherPlayerScreen) {
+        if (yourPlayerScreen > otherPlayerScreen) {
             otherPlayer.style.opacity = '0.25'
 
         } else if (yourPlayerScreen < otherPlayerScreen) {
             // se voce estiver atras
             otherPlayer.style.opacity = '0.25'
-        } else if(yourPlayerScreen == otherPlayerScreen) {
+        } else if (yourPlayerScreen == otherPlayerScreen) {
             // screens iguais
             otherPlayer.style.opacity = '1'
             yourPlayerScreen.style.opacity = '1'
-            
+
         }
-        
+
     })
-    
+
 }

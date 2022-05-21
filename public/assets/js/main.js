@@ -19,10 +19,30 @@ class Game{
         // set map size
         let scene = document.querySelector('.cenario')
         
-        this.play_song("default.mp3");
+        this.play_music("default.ogg");
+
+        this.player_songs();
+        
     }
 
-    play_song(src){
+    // set player songs
+    player_songs() {
+        document.onkeydown = (e) => {
+
+            // salto
+            if(["Space", "ArrowUp", "KeyW"].indexOf(e.code) > -1) this.play_song('smb_jump-small.wav')
+            
+        };
+    }
+
+    play_song(src) {
+        let sound = document.createElement('audio');
+        sound.src = `./${this.assets}/soundtrack/${src}`
+        sound.autoplay = true;
+        sound.play()
+    }
+
+    play_music(src){
         let sound = document.createElement('audio');
         sound.src = `./${this.assets}/soundtrack/${src}`
         sound.autoplay = true;

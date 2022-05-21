@@ -67,6 +67,7 @@ class App {
         (detail.id === event.id) ? detail.screen += 1 : detail.screen
       )
 
+      console.log('Mudou screen:', event.id, event.screen)
     }
 
     io.on("connection", (socket) => {

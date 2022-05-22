@@ -113,7 +113,7 @@ class App {
 
       socket.on('change_screen', (action) => {
         setUserScreen(action)
-        io.sockets.emit('changed_screen', usersDetails)
+        io.sockets.emit('changed_screen', action)
       });
     });
   }

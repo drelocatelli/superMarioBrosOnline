@@ -129,12 +129,12 @@ function scrollFollowsHost(playerElement, mouseEvent) {
         // change screen
         let newPlayerScreen = { id: socket.id }
         // evento no front
-        socket.emit('change_screen', newPlayerScreen);
+        socket.emit('change_screen', {hostId: mouseEvent.hostId});
         // move all players to start
-        othersPlayersElements.forEach(otherPlayer => {
-            otherPlayer.style.left = '0px'
-        })
-        hostElement.style.left = '0px';
+        // othersPlayersElements.forEach(otherPlayer => {
+        //     otherPlayer.style.left = '0px'
+        // })
+        // hostElement.style.left = '0px';
 
     }
 
@@ -144,6 +144,15 @@ function scrollFollowsHost(playerElement, mouseEvent) {
 socket.on('changed_screen', (event) => {
 
     console.log('screen changed')
+
+    let hostElement = Array.from(document.querySelectorAll(`div.player-container`)).find(player => player.id == event.hostId);
+    let othersPlayersElements = Array.from(document.querySelectorAll(`div.player-container`)).filter(player => player.id != event.hostId)
+
+    // when screen changed, set players to start
+    othersPlayersElements.forEach(otherPlayer => {
+        otherPlayer.style.left = '0px'
+    })
+    hostElement.style.left = '0px';
 
 })
 
@@ -314,7 +323,6 @@ socket.on('player_move', (event) => {
 
     // animation of jump
     function setAnimationJump(side, person, container) {
-        console.log(side)
         switch(side) {
             case 'left':
                 container.querySelector('img').src = `${spritesFolder}/${person}-1-jump-1-invert.png`;
@@ -330,9 +338,17 @@ socket.on('player_move', (event) => {
         switch(side) {
             case 'left':
                 container.querySelector('img').src = `${spritesFolder}/${person}-1-run-1-invert.png`;
+                setTimeout(() => {
+                    // go back to normal 
+                    container.querySelector('img').src = `${spritesFolder}/${person}-1-invert.png`;
+                }, 100)
             break;
             case 'right':
                 container.querySelector('img').src = `${spritesFolder}/${person}-1-run-1.png`;
+                setTimeout(() => {
+                    // go back to normal 
+                    container.querySelector('img').src = `${spritesFolder}/${person}-1.png`;
+                }, 100)
             break;
         }
     }

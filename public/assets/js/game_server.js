@@ -222,9 +222,7 @@ socket.on('player_move', (event) => {
     // set host to mario
     if(event.hostId == event.id) {
         let hostContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === event.hostId)
-        console.log(hostContainer)
         if(typeof hostContainer != 'undefined') hostContainer.setAttribute('person', 'mario')
-        
     }
 
 
@@ -283,6 +281,8 @@ socket.on('player_move', (event) => {
         }
     }
 
+    
+
     // pula para cima e anda
     function setCharacterPositionUPShift(position) {
 
@@ -312,23 +312,51 @@ socket.on('player_move', (event) => {
 
     }
 
+    // animation of jump
+    function setAnimationJump(side, person, container) {
+        console.log(side)
+        switch(side) {
+            case 'left':
+                container.querySelector('img').src = `${spritesFolder}/${person}-1-jump-1-invert.png`;
+            break;
+            case 'right':
+                container.querySelector('img').src = `${spritesFolder}/${person}-1-jump-1.png`;
+            break;
+        }
+    }
+
+    // animation of walk
+    function setAnimationSide(side, person, container) {
+        switch(side) {
+            case 'left':
+                container.querySelector('img').src = `${spritesFolder}/${person}-1-run-1-invert.png`;
+            break;
+            case 'right':
+                container.querySelector('img').src = `${spritesFolder}/${person}-1-run-1.png`;
+            break;
+        }
+    }
+
     function setCharacterPositionUP() {
+        let person = uniqueContainer.getAttribute('person')
         let currentUp = uniqueContainer.style.bottom.match(/[0-9]*/)[0]
 
         // evita salto duplo
         if (currentUp > floorPosition && currentUp <= upDeslocation) return;
 
+        setAnimationJump('right', person, uniqueContainer)
         uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
         uniqueContainer.style.bottom = `${upDeslocation}%`
         setTimeout(() => {
             uniqueContainer.style.bottom = `${floorPosition}%`
+            setAnimationSide('right', person, uniqueContainer)
         }, 200)
 
     }
 
     function setCharacterPositionLeft() {
         let person = uniqueContainer.getAttribute('person')
-        uniqueContainer.querySelector('img').src = `${spritesFolder}/${person}-1-run-1-invert.png`;
+        setAnimationSide('left', person, uniqueContainer)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newLeft = (Number(currentLeft) - leftDeslocation)
@@ -338,7 +366,7 @@ socket.on('player_move', (event) => {
 
     function setCharacterPositionRight() {
         let person = uniqueContainer.getAttribute('person')
-        uniqueContainer.querySelector('img').src = `${spritesFolder}/${person}-1-run-1.png`;
+        setAnimationSide('right', person, uniqueContainer)
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         let currentRight = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newRight = (Number(currentRight) + leftDeslocation)

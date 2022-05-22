@@ -24,7 +24,7 @@
 body {
     background: url('../../sprites/bg-1.png')repeat-x;
     background-color: #8E8FF6;
-    background-size: 500%;
+    background-size: 800%;
     image-rendering: pixelated;
     background-position: top left;
 }
@@ -45,8 +45,10 @@ game {
     height: 100%;
 }
 
-.mountain{
-    width:30%;
+.mapTile{
+    width:440%;
+    position: absolute;
+    bottom: 11%;
 }
 
 .controls {

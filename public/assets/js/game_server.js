@@ -86,7 +86,7 @@ function scrollFollowsHost(playerElement, mouseEvent) {
     let maxEdge = document.querySelector('.maxEdge').getBoundingClientRect().left;
     let HostPosition = hostElement.querySelector('img').getBoundingClientRect().left;
 
-    const imgDeslocation = 3;
+    const imgDeslocation = 1.5;
 
 
     // set max edge for you, basic player 
@@ -102,7 +102,7 @@ function scrollFollowsHost(playerElement, mouseEvent) {
     if(mouseEvent.hostId === mouseEvent.id)
     if (HostPosition < maxEdge) {
         // items that can move
-        let itemsCanMove = ['.mountain', '.cenario']
+        let itemsCanMove = ['.mapTile', '.cenario']
 
         itemsCanMove.map(item => {
             let itemContent = document.querySelector(item)
@@ -257,7 +257,7 @@ socket.on('player_move', (event) => {
 
     // character control
     const upDeslocation = 80;
-    const leftDeslocation = 8;
+    const leftDeslocation = 5;
     const floorPosition = 11;
 
     const verticalDeslocationTransition = `0.3s ease-out`

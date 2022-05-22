@@ -9,7 +9,12 @@ const socketio = require('socket.io')
 require('dotenv').config()
 
 const server = http.createServer(app)
-const io = socketio(server)
+const io = socketio(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+})
 
 app.use('/public', express.static('public'))
 
@@ -51,7 +56,6 @@ function setUserScreen(event) {
 
     console.log('Mudou screen:', event.id, event.screen)
 }
-
 
 io.on('connection', (socket) => {
     let users = io.engine.clientsCount;

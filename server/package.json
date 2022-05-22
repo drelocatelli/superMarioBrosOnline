@@ -1,0 +1,33 @@
+{
+  "name": "mariogame",
+  "version": "1.0.0",
+  "description": "https://user-images.githubusercontent.com/32282846/135005152-9ab47570-a6b2-4bb9-b92c-5c444bd9b918.mp4",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "ip": "^1.1.8",
+    "node": "^16.10.0",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13",
+    "requirejs": "^2.3.6"
+  },
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon -e .* -w . -w public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drelocatelli/superMarioBrosOnline.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drelocatelli/superMarioBrosOnline/issues"
+  },
+  "homepage": "https://github.com/drelocatelli/superMarioBrosOnline#readme"
+}

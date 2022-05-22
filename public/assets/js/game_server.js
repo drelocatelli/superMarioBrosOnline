@@ -36,6 +36,7 @@ socket.on('login', action => {
     player.forEach(player => {
         players.innerHTML += player
     })
+
     // identifica o host
     if(action.ip === '127.0.0.1') {
         host = action
@@ -154,6 +155,7 @@ function cloudsMovimentation(state) {
 }
 
 document.addEventListener('keydown', (key) => {
+
     // disable keys scrolling
     window.addEventListener("keydown", function (e) {
         if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "KeyA", "KeyD",].indexOf(e.code) > -1) {
@@ -166,7 +168,7 @@ document.addEventListener('keydown', (key) => {
         if (player.id === socket.id)
             return scrollSpacing
     })[0];
-    console.log(`%c Você pressionou uma tecla: ${socket.id}`, "background:red; color:white");
+    // console.log(`%c Você pressionou uma tecla: ${socket.id}`, "background:red; color:white");
 
     let currentPlayerPosition = yourPlayerElement.getBoundingClientRect().left
 
@@ -187,6 +189,7 @@ document.addEventListener('keydown', (key) => {
 
 socket.on('keypressed', event => {
 
+    
     console.log(`%c Apertou uma tecla (${event.key}): ${event.id}`, "background:blue; color:white;")
 
     let playerContainer = document.querySelectorAll('.player-container')
@@ -215,6 +218,15 @@ socket.on('keypressed', event => {
 
 
 socket.on('player_move', (event) => {
+
+    // set host to mario
+    if(event.hostId == event.id) {
+        let hostContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === event.hostId)
+        console.log(hostContainer)
+        if(typeof hostContainer != 'undefined') hostContainer.setAttribute('person', 'mario')
+        
+    }
+
 
     let playerContainer = document.querySelectorAll('.player-container')
     let pcontainer = Array.from(playerContainer)

@@ -10,6 +10,10 @@ socket.on('host_setted', (event) => {
     host = event
 })
 
+const playerName = (name) => {
+    return name.substr(0, 5).toUpperCase()
+}
+
 // player logado
 socket.on('login', action => {
     connectionsEl.querySelector('li#users').innerHTML = `<li>${action.users} player(s)</li>`
@@ -22,7 +26,7 @@ socket.on('login', action => {
     player.push(`
     <div class="player-container" id="${action.id}" screen="0">
         <div class="scroll-spacing"></div>
-            <span class="name">Player</span>
+            <span class="name">${playerName(action.id)}</span>
             <img src="../public/assets/sprites/luigi-1.png" class="player">
     </div>
             `)
@@ -38,6 +42,7 @@ socket.on('login', action => {
         // seta host pra mario
         let hostContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id == action.id)
 
+        // hostContainer.querySelector('.name').innerHTML = 'HOST'
         hostContainer.querySelector('img').src = '../public/assets/sprites/mario-1.png'
     }
     
@@ -216,7 +221,7 @@ socket.on('player_move', (event) => {
     if (uniqueContainer == undefined) {
         players.innerHTML += `
         <div class="player-container" id="${event.id}" screen="${event.screen}">
-        <span class="name">Player</span>
+        <span class="name">${playerName(event.id)}</span>
         
         <img src="../public/assets/sprites/mario-1.png" class="player">
         </div>

@@ -84,7 +84,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on('set_user_details', (event) => {
-      addOrReplaceusersDetails(event)
+      try {
+        addOrReplaceusersDetails(event)
+      } catch(err) {
+        console.log(err)
+      }
     })
 
     socket.on("keypress", (event) => {

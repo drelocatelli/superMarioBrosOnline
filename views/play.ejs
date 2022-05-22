@@ -4,56 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <link rel="stylesheet" href="../public/assets/css/normalize.css">
-    <link rel="stylesheet" href="../public/assets/css/basic.css">
-    <link rel="stylesheet" href="../public/assets/css/levels/start.css">
-
-    <script type="module" src="../public/assets/js/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <%= name %> - LVL 1
+        <%= name %>
     </title>
 </head>
 
-<body class="clouds-anim">
-    <game>
-        <root style="visibility: hidden;">
-            <%= root %>
-        </root>
-        <connections>
-            Status:<br>
-            <li id="users">0 player(s)</li>
-            <ul id="list"></ul>
-        </connections>
-
-        <share>
-            Seu IP<br>
-            <input type="text" value="Carregando...">
-        </share>
-
-        <div class="buttons">
-            <button id="audio">
-                <img src="../public/assets/controls/sound.png">
-            </button>
-        </div>
-
-        <img src="../public/assets/sprites/mountain-1.png" class="mountain back">
-
-        <div class="players">
-        </div>
-
-
-        <div class="cenario">
-        </div>
-
-        <credits onclick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')">
-            Drelocatelli
-        </credits>
-        <script src="../public/assets/js/mapConfig.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="../public/assets/js/game_server.js"></script>
-
-    </game>
+<body>
+    <iframe src="./level/1" id="game" frameborder="0" width=""></iframe>
 </body>
 
 </html>
+
+<script>
+    (function () {
+        // focus iframe when starts
+        var game = document.querySelector('iframe#game');
+        game.focus();
+
+    })();
+</script>
+
+<style>
+    iframe#game {
+        width: 1000px;
+        height: 80%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    body {
+        background: rgb(39, 39, 39);
+    }
+</style>

@@ -30,6 +30,10 @@ class App {
       res.render("play", { name: game, root: path.resolve(path.dirname("")) });
     });
 
+    this.#express.get('/level/:level', function (req, res) {
+        res.render(`lv${req.params.level}`, { name: game, root: path.resolve(path.dirname("")) })
+    })
+
     this.#express.get('/ip', (req, res) => {
 
       axios({
@@ -49,9 +53,8 @@ class App {
 
     })
 
-    let users = 0;
-
     let usersDetails = [];
+    let hostDetails = {};
 
     function addOrReplaceusersDetails(event) {
       const index = usersDetails.findIndex(el => el.id === event.id);
@@ -67,12 +70,16 @@ class App {
         (detail.id === event.id) ? detail.screen += 1 : detail.screen
       )
 
+      console.log('Mudou screen:', event.id, event.screen)
     }
 
     io.on("connection", (socket) => {
-      users++;
+      let users = io.engine.clientsCount;
 
-      io.sockets.emit("login", { users, id: socket.id });
+      let newConnection = (socket.handshake.address == '::1') ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
+      console.log("\nUsuário conectado:", newConnection);
+
+      io.sockets.emit("login", { users, id: socket.id, ip: newConnection });
 
       socket.on("disconnect", () => {
         users--;
@@ -86,21 +93,27 @@ class App {
         
       });
 
+      socket.on('set_host_details', (event) => {
+        hostDetails = event
+        console.log('HOST: ', hostDetails)
+        io.sockets.emit('host_setted', hostDetails)
+      })
+
       socket.on('set_user_details', (event) => {
         addOrReplaceusersDetails(event)
       })
 
       socket.on("keypress", (event) => {
-        io.sockets.emit("keypressed", event);
+        io.sockets.emit("keypressed", {...event, hostId: hostDetails.id});
       });
 
       socket.on("player_movement", (action) => {
-        io.sockets.emit("player_move", action);
+        io.sockets.emit("player_move", {...action, hostId: hostDetails.id});
       });
 
       socket.on('change_screen', (action) => {
         setUserScreen(action)
-        io.sockets.emit('changed_screen', usersDetails)
+        io.sockets.emit('changed_screen', action)
       });
     });
   }

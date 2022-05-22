@@ -106,7 +106,7 @@ root{
 img.player {
     position: absolute;
     bottom: 0;
-    width: 50%;
+    width: 60px;
     transform: translateX(-50%);
     left: 50%;
 }

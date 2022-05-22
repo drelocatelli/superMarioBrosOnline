@@ -5,6 +5,8 @@ let players = document.querySelector('.players')
 
 var host = {}
 
+const spritesFolder = '../public/assets/sprites/'
+
 socket.on('host_setted', (event) => {
     // set host on front
     host = event
@@ -24,10 +26,10 @@ socket.on('login', action => {
     // seta player na tela
 
     player.push(`
-    <div class="player-container" id="${action.id}" screen="0">
+    <div class="player-container" id="${action.id}" screen="0" person="luigi">
         <div class="scroll-spacing"></div>
             <span class="name">${playerName(action.id)}</span>
-            <img src="../public/assets/sprites/luigi-1.png" class="player">
+            <img src="${spritesFolder}/luigi-1.png" class="player">
     </div>
             `)
 
@@ -44,6 +46,7 @@ socket.on('login', action => {
 
         // hostContainer.querySelector('.name').innerHTML = 'HOST'
         hostContainer.querySelector('img').src = '../public/assets/sprites/mario-1.png'
+        hostContainer.setAttribute('person', 'mario')
     }
     
     console.log(`%c Entrou no game: ${action.id}`, "background:green; color:white;")
@@ -223,7 +226,7 @@ socket.on('player_move', (event) => {
         <div class="player-container" id="${event.id}" screen="${event.screen}">
         <span class="name">${playerName(event.id)}</span>
         
-        <img src="../public/assets/sprites/mario-1.png" class="player">
+        <img src="${spritesFolder}/mario-1.png" class="player">
         </div>
         `
     }
@@ -271,29 +274,29 @@ socket.on('player_move', (event) => {
     // pula para cima e anda
     function setCharacterPositionUPShift(position) {
 
-        uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
-        let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
-        let newLeft = (Number(currentLeft) - leftDeslocation)
-        uniqueContainer.style.left = `${newLeft}px`;
+        // uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
+        // let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
+        // let newLeft = (Number(currentLeft) - leftDeslocation)
+        // uniqueContainer.style.left = `${newLeft}px`;
 
-        let currentUp = uniqueContainer.style.bottom.match(/[0-9]*/)[0]
+        // let currentUp = uniqueContainer.style.bottom.match(/[0-9]*/)[0]
 
-        // pula
-        if (currentUp > floorPosition && currentUp <= upDeslocation) return;
+        // // pula
+        // if (currentUp > floorPosition && currentUp <= upDeslocation) return;
 
-        uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
-        uniqueContainer.style.bottom = `${upDeslocation}%`
-        setTimeout(() => {
-            uniqueContainer.style.bottom = `${floorPosition}%`
-        }, 200)
+        // uniqueContainer.style.transition = `bottom ${verticalDeslocationTransition}`;
+        // uniqueContainer.style.bottom = `${upDeslocation}%`
+        // setTimeout(() => {
+        //     uniqueContainer.style.bottom = `${floorPosition}%`
+        // }, 200)
 
 
-        if(position === 'left') {
-            setCharacterPositionLeft()
+        // if(position === 'left') {
+        //     setCharacterPositionLeft()
 
-        } else if(position === 'right') {
-            setCharacterPositionRight()
-        }
+        // } else if(position === 'right') {
+        //     setCharacterPositionRight()
+        // }
 
     }
 
@@ -312,7 +315,8 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionLeft() {
-
+        let person = uniqueContainer.getAttribute('person')
+        uniqueContainer.querySelector('img').src = `${spritesFolder}/${person}-1-run-1-invert.png`;
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newLeft = (Number(currentLeft) - leftDeslocation)
@@ -321,6 +325,8 @@ socket.on('player_move', (event) => {
     }
 
     function setCharacterPositionRight() {
+        let person = uniqueContainer.getAttribute('person')
+        uniqueContainer.querySelector('img').src = `${spritesFolder}/${person}-1-run-1.png`;
         uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
         let currentRight = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
         let newRight = (Number(currentRight) + leftDeslocation)

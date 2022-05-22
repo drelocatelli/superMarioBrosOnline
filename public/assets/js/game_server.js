@@ -86,7 +86,7 @@ function scrollFollowsHost(playerElement, mouseEvent) {
     let maxEdge = document.querySelector('.maxEdge').getBoundingClientRect().left;
     let HostPosition = hostElement.querySelector('img').getBoundingClientRect().left;
 
-    const imgDeslocation = 1.5;
+    const imgDeslocation = 3;
 
 
     // set max edge for you, basic player 
@@ -256,8 +256,8 @@ socket.on('player_move', (event) => {
     currentContainer.style.zIndex = '2'
 
     // character control
-    const upDeslocation = 80;
-    const leftDeslocation = 5;
+    const upDeslocation = 60;
+    const leftDeslocation = 3;
     const floorPosition = 11;
 
     const verticalDeslocationTransition = `0.3s ease-out`

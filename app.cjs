@@ -30,6 +30,10 @@ class App {
       res.render("play", { name: game, root: path.resolve(path.dirname("")) });
     });
 
+    this.#express.get('/level/:level', function (req, res) {
+        res.render(`lv${req.params.level}`, { name: game, root: path.resolve(path.dirname("")) })
+    })
+
     this.#express.get('/ip', (req, res) => {
 
       axios({

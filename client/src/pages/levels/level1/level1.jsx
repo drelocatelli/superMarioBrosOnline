@@ -14,18 +14,18 @@ export default function Level1() {
 
 function Scene() {
     return(
-        <game>
+        <div className='game'>
 
-            <connections>
+            <div className='connections'>
                 Status: <br />
                 <li id="users">0 player(s)</li>
                 <ul id="list"></ul>
-            </connections>
+            </div>
 
-            <share>
+            <div className='share'>
                 Seu IP<br />
-                <input type="text" value="Carregando..." />
-            </share>
+                <input type="text" value="Carregando..." disabled />
+            </div>
 
         <div className="buttons">
             <button id="audio">
@@ -39,10 +39,10 @@ function Scene() {
 
         <div className="cenario"> </div>
 
-        <credits onClick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')">
+        <div className='credits' onClick={() => window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')}>
             Drelocatelli
-        </credits>
+        </div>
             
-        </game>
+        </div>
     )
 }

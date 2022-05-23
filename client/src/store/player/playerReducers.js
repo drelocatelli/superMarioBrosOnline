@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { changePlayers } from "./playerAction"
+import { changeConnected, changeHost } from "./playerAction"
 
 const INITIAL_STATE = {
     host: {},
@@ -8,8 +8,12 @@ const INITIAL_STATE = {
 }
 
 export default createReducer(INITIAL_STATE, {
-    [changePlayers.type]: (state, action) => ({
+    [changeConnected.type]: (state, action) => ({
         ...state,
         connected: action.payload,
+    }),
+    [changeHost.type]: (state, action) => ({
+        ...state,
+        host: action.payload,
     })
 })

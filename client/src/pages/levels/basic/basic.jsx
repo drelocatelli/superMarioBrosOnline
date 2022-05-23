@@ -1,5 +1,6 @@
-import { useDispatch } from "react-redux";
-import { SERVER } from "../../../socket/server";
+import { store } from "../../../store/storeConfig";
+import {changeConnected, changeHost} from '../../../store/player/playerAction'
+import { getPublicIp } from "../../../socket/server";
 
 export async function initialize(socket) {
     setPublicIp();
@@ -9,13 +10,9 @@ export async function initialize(socket) {
 }
 
 async function setPublicIp() {
-    const ip = await fetch(`${SERVER}/ip`)
     const input = document.querySelector('input')
 
-    const response = await ip.json()
-
-    input.value = response.publicIp
-    // input.value = ip
+    input.value = await getPublicIp()
 }
 
 function connect(socket) {
@@ -68,6 +65,7 @@ async function setPlayerToScreen(action, socket) {
 }
 
 function setHost(action, socket) {
+    
     let playersContainer = document.querySelectorAll('.player-container');
 
     if(action.ip === '127.0.0.1') {
@@ -78,6 +76,12 @@ function setHost(action, socket) {
 
         socket.emit('set_host_details', {hostId: action.id, ip: action.ip})
 
+        store.dispatch(changeConnected(true))
+        store.dispatch(changeHost({hostId: action.id, ip: action.ip}))
+
+    } else {
+        let otherPlayers = Array.from(playersContainer).find(player => player.id == action.id)
+        console.log(otherPlayers)
     }
     
 }
@@ -91,7 +95,6 @@ function switchCharacter(socket) {
                 player.querySelector('img').src = '/assets/sprites/mario-1.png'
             }
         })
-        console.log(action)
     })
     
 }

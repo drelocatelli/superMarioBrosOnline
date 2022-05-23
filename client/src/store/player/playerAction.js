@@ -1,3 +1,4 @@
 import {createAction} from '@reduxjs/toolkit';
 
-export const changePlayers = createAction('PLAYERS_CHANGE');
+export const changeConnected = createAction('CONNECTION_CHANGED');
+export const changeHost = createAction('HOST_CHANGED')

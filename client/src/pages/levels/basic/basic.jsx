@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { SERVER } from "../../../socket/server";
 
 export async function initialize(socket) {
@@ -25,6 +26,7 @@ function connect(socket) {
         socket.on('login', (action) => {
             setTotalPlayers(action)
             setPlayerToScreen(action, socket)
+            switchPerson()
         })
 
     })
@@ -36,7 +38,7 @@ function setTotalPlayers(action) {
     totalPlayersEl.innerHTML = `${action.users} player(s)`
 }
 
-function setPlayerToScreen(action, socket) {
+async function setPlayerToScreen(action, socket) {
 
     const players = document.querySelector('.players')
 
@@ -48,7 +50,7 @@ function setPlayerToScreen(action, socket) {
     }
 
     playerList.push(`
-    <div className="player-container" id="${action.id}" screen="0" person="luigi">
+    <div class="player-container" id="${action.id}" screen="0" person="luigi">
         <span class="name">${playerName(action.id)}</span>
         <img src="/assets/sprites/luigi-1.png" class="player" />
     </div>
@@ -58,19 +60,32 @@ function setPlayerToScreen(action, socket) {
         players.innerHTML += player
     })
 
-    // identifica o host
-    if(action.ip === '127.0.0.1') {
-        socket.emit('set_host_details', action)
-
-        // seta host pra mario
-        let hostContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id == action.id)
-
-        // hostContainer.querySelector('.name').innerHTML = 'HOST'
-        hostContainer.querySelector('img').src = '../public/assets/sprites/mario-1.png'
-        hostContainer.setAttribute('person', 'mario')
-    }
+    setHost(action)
     
     console.log(`%c Entrou no game: ${action.id}`, "background:green; color:white;")
 
 
+}
+
+function setHost(action) {
+    let playersContainer = document.querySelectorAll('.player-container');
+
+    if(action.ip === '127.0.0.1') {
+        let hostContainer = Array.from(playersContainer).find(player => player.id === action.id)
+
+        // set to mario
+        hostContainer.setAttribute('person', 'mario')
+
+    }
+    
+}
+
+function switchPerson() {
+    let playersContainer = document.querySelectorAll('.player-container');
+    playersContainer.forEach(player => {
+        if(player.getAttribute('person') === 'mario') {
+            player.querySelector('img').src = '/assets/sprites/mario-1.png'
+        }
+    })
+    
 }

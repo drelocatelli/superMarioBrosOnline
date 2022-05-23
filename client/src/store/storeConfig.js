@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import hostReducers from "./host/hostReducers";
+import playerReducers from "./player/playerReducers";
 
 export const store = configureStore({
     reducer: {
-        host: hostReducers,
+        playerReducer: playerReducers,
     }
 })

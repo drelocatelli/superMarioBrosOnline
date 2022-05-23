@@ -7,6 +7,43 @@ export async function initialize(socket) {
 
     // do login
     connect(socket)
+
+    // key activation && movimentation
+    keyHandle(socket)
+}
+
+function keyHandle(socket) {
+    document.addEventListener('keydown', (key) => {
+        disableKeyScrolling()
+
+        // your player element
+        let yourPlayerElement = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === socket.id)
+        let currentPlayerPosition = yourPlayerElement.getBoundingClientRect().left
+        
+        socket.emit('keypress', {key: key.code, id: socket.id})
+        
+        // movePlayer(socket)
+        
+    })
+}
+
+function movePlayer(socket) {
+
+    socket.on('player_move', (event) => {
+        console.log(`%c Apertou uma tecla (${event.key}): ${event.id}`, "background:blue; color:white;")
+
+        
+    })
+    
+}
+
+function disableKeyScrolling() {
+    // disable keys scrolling
+    window.addEventListener("keydown", function (e) {
+        if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "KeyA", "KeyD",].indexOf(e.code) > -1) {
+            e.preventDefault();
+        }
+    }, false);
 }
 
 async function setPublicIp() {
@@ -23,16 +60,18 @@ async function setPublicIp() {
 
 function connect(socket) {
 
-    socket.on('connect', () => {
-        console.log('Connected')
-
+    socket.on('connect', (e) => {
         socket.on('login', (action) => {
             setTotalPlayers(action)
             setPlayerToScreen(action, socket)
             switchCharacter(socket)
         })
-
     })
+
+    socket.on('player_move', action => {
+        console.log(action)
+    })
+
 }
 
 function setTotalPlayers(action) {
@@ -87,7 +126,8 @@ function setHost(action, socket) {
 
     } else {
         let otherPlayers = Array.from(playersContainer).find(player => player.id == action.id)
-        console.log(otherPlayers)
+
+        socket.emit('set_user_details', {id: socket.id})
     }
     
 }

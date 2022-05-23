@@ -22,9 +22,12 @@ async function setPublicIp() {
 
 async function connect(socket) {
 
-    socket.on('login', (action) => {
-        console.log('connected')
+    socket.on('connect', () => {
+        console.log('Connected')
 
-      
+        socket.on('login', () => {
+            console.log('login')
+        })
+        
     })
 }

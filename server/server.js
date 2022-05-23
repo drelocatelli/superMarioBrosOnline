@@ -45,7 +45,7 @@ io.of('/ws').on('connection', (socket) => {
   let newConnection = (socket.handshake.address == '::1') ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
   console.log("\nUsuário conectado:", newConnection);
 
-  io.sockets.emit("login", { users, id: socket.id, ip: newConnection });
+  socket.emit("login", { users, id: socket.id, ip: newConnection });
 
   socket.on("disconnect", () => {
     console.log('Saiu:', socket.id)

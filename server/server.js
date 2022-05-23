@@ -40,12 +40,21 @@ app.get('/ip', (req, res) => {
 })
 
 io.of('/ws').on('connection', (socket) => {
+
+  let hostDetails = {}
+  
   let users = io.engine.clientsCount;
 
   let newConnection = (socket.handshake.address == '::1') ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
   console.log("\nUsuário conectado:", newConnection);
 
   socket.emit("login", { users, id: socket.id, ip: newConnection });
+
+  socket.on('set_host_details', (event) => {
+    hostDetails = event
+    console.log("HOST:", hostDetails)
+    socket.emit("host_setted", hostDetails)
+  })
 
   socket.on("disconnect", () => {
     console.log('Saiu:', socket.id)

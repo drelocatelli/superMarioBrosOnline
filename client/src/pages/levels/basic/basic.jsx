@@ -26,7 +26,7 @@ function connect(socket) {
         socket.on('login', (action) => {
             setTotalPlayers(action)
             setPlayerToScreen(action, socket)
-            switchPerson()
+            switchCharacter(socket)
         })
 
     })
@@ -60,14 +60,14 @@ async function setPlayerToScreen(action, socket) {
         players.innerHTML += player
     })
 
-    setHost(action)
+    setHost(action, socket)
     
     console.log(`%c Entrou no game: ${action.id}`, "background:green; color:white;")
 
 
 }
 
-function setHost(action) {
+function setHost(action, socket) {
     let playersContainer = document.querySelectorAll('.player-container');
 
     if(action.ip === '127.0.0.1') {
@@ -76,16 +76,22 @@ function setHost(action) {
         // set to mario
         hostContainer.setAttribute('person', 'mario')
 
+        socket.emit('set_host_details', {hostId: action.id, ip: action.ip})
+
     }
     
 }
 
-function switchPerson() {
-    let playersContainer = document.querySelectorAll('.player-container');
-    playersContainer.forEach(player => {
-        if(player.getAttribute('person') === 'mario') {
-            player.querySelector('img').src = '/assets/sprites/mario-1.png'
-        }
+function switchCharacter(socket) {
+    
+    socket.on("host_setted", action => {
+        let playersContainer = document.querySelectorAll('.player-container');
+        playersContainer.forEach(player => {
+            if(player.getAttribute('person') === 'mario') {
+                player.querySelector('img').src = '/assets/sprites/mario-1.png'
+            }
+        })
+        console.log(action)
     })
     
 }

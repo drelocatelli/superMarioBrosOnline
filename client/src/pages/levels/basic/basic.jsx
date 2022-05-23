@@ -1,6 +1,6 @@
 import { store } from "../../../store/storeConfig";
 import {changeConnected, changeHost} from '../../../store/player/playerAction'
-import { getPublicIp } from "../../../socket/server";
+import { SERVER } from "../../../socket/server";
 
 export async function initialize(socket) {
     setPublicIp();
@@ -12,7 +12,13 @@ export async function initialize(socket) {
 async function setPublicIp() {
     const input = document.querySelector('input')
 
-    input.value = await getPublicIp()
+    const ip = await fetch(`${SERVER()}/ip`)
+    const port = new URL(window.location.href).port
+
+    const response = await ip.json()
+
+    input.value = `${response.publicIp}:${port}`
+
 }
 
 function connect(socket) {

@@ -5,6 +5,7 @@ const ip = require('ip')
 const axios = require('axios')
 const http = require('http')
 const socketio = require('socket.io')
+const cors = require('cors')
 
 require('dotenv').config()
 
@@ -16,6 +17,7 @@ const io = socketio(server, {
   }
 })
 
+app.use(cors())
 app.use('/public', express.static('public'))
 
 app.get('/ip', (req, res) => {
@@ -36,6 +38,7 @@ app.get('/ip', (req, res) => {
     })
 
 })
+
 
 let userDetails = [];
 let hostDetails = {};
@@ -66,7 +69,6 @@ io.on('connection', (socket) => {
     io.sockets.emit("login", { users, id: socket.id, ip: newConnection });
 
     socket.on("disconnect", () => {
-      users--;
       io.sockets.emit("logout", { users, id: socket.id });
 
       // remove usuario
@@ -84,11 +86,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('set_user_details', (event) => {
-      try {
         addOrReplaceusersDetails(event)
-      } catch(err) {
-        console.log(err)
-      }
     })
 
     socket.on("keypress", (event) => {

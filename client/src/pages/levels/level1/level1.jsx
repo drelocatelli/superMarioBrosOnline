@@ -11,8 +11,6 @@ export default function Level1() {
 
     const playerReducer = useSelector(state => state.playerReducer)
 
-    console.log(playerReducer)
-    
     useEffect(() => {
         const socket = io(WEBSOCKET)
 

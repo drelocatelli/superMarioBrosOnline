@@ -73,9 +73,9 @@ io.on('connection', (socket) => {
 
       // remove usuario
       console.log('Saiu:', socket.id)
-      let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails))
-      removeOfUsersDetails = removeOfUsersDetails.filter(userDetail => userDetail.id != socket.id)
-      usersDetails = removeOfUsersDetails
+      // let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails))
+      // removeOfUsersDetails = removeOfUsersDetails.filter(userDetail => userDetail.id != socket.id)
+      // usersDetails = removeOfUsersDetails
       
     });
 
@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('set_user_details', (event) => {
-        addOrReplaceusersDetails(event)
+        // addOrReplaceusersDetails(event)
     })
 
     socket.on("keypress", (event) => {

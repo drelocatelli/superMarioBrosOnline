@@ -5717,6 +5717,11 @@ jsonpointer@^5.0.0:
     array-includes "^3.1.4"
     object.assign "^4.1.2"
 
+kaboom@^2000.2.9:
+  version "2000.2.9"
+  resolved "https://registry.yarnpkg.com/kaboom/-/kaboom-2000.2.9.tgz#9637e3debe8daba527cbf27bb7c640fb29eb6106"
+  integrity sha512-LenwxK87NHnjBgfjpu+vQfMCSUEg2FnhBTPsqnYyJhc/iGIL1ZMoQEumtU/nIEPz1rP0M3Xdh4OAmotYRi1F6g==
+
 kind-of@^6.0.2:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"

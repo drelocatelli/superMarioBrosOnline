@@ -1,6 +1,5 @@
-import env from 'react-dotenv';
 import io from 'socket.io-client';
 
-var socket = io(env.SERVER);
+var socket = io('http://localhost:3000');
 
 export default socket;

@@ -1,9 +1,13 @@
+import {Link} from 'react-router-dom'
+import Frame from '../components/frame/frame';
+import '../components/frame/frame.css'
+
 function App() {
   
   return (
-    <>
-      ola mundo
-    </>
+    <div class='fundo'>
+      <Frame />
+    </div>
   );
 }
 

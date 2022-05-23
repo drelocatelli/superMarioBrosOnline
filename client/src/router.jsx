@@ -1,13 +1,13 @@
 import App from './pages/App';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import SwitchLevel from './pages/SwitchLevel';
+import Level1 from './pages/levels/level1/level1';
 
 export default function Router() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<App />} />
-                <Route path="/level/:level" element={<SwitchLevel />} />
+                <Route path="/level/1" element={<Level1 />} />
             </Routes>
         </BrowserRouter>
     );

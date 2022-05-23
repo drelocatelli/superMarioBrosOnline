@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import {useParams} from 'react-router-dom'
+import socket from '../socket/connection'
 
 export default function Level() {
 
@@ -15,5 +17,13 @@ export default function Level() {
 }
 
 function Level1() {
+
+    useEffect(() => {
+        console.log(socket)
+        socket.on('login', action => {
+            console.log('connected')
+        })
+    }, [])
+    
     return(<>ola mundo</>)
 }

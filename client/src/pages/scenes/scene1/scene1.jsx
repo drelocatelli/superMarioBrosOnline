@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { initialize } from '../basic/basic';
 import '../basic/basic.css';
-import './level1.css';
+import './scene1.css';
 
-export default function Level1() {
+export default function Scene1() {
     
     useEffect(() => {
         initialize()
@@ -29,7 +29,7 @@ function Scene() {
 
         <div className="buttons">
             <button id="audio">
-                <img src="/assets/controls/sound.png"/>
+                <img src="/assets/controls/sound.png" alt="sound icon"/>
             </button>
         </div>
 

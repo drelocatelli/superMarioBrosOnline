@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { io } from 'socket.io-client';
+import { WEBSOCKET } from '../../../socket/server';
 import { initialize } from '../basic/basic';
 import '../basic/basic.css';
 import './level1.css';
@@ -6,7 +8,9 @@ import './level1.css';
 export default function Level1() {
     
     useEffect(() => {
-        initialize()
+        const socket = io(WEBSOCKET)
+
+        initialize(socket)
     }, [])
     
     return <Scene />

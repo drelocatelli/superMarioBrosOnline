@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
-import socket from '../../../socket/connection'
+import { initialize } from '../basic/basic';
 import '../basic/basic.css';
 import './level1.css';
 
 export default function Level1() {
-
+    
     useEffect(() => {
-        socket.on('login', action => {
-            console.log('connected')
-        })
+        initialize()
     }, [])
     
+    return <Scene />
+}
+
+function Scene() {
     return(
         <game>
 
@@ -31,13 +33,13 @@ export default function Level1() {
             </button>
         </div>
 
-        <img src="/assets/sprites/mapTile.png" class="mapTile" />
+        <img src="/assets/sprites/mapTile.png" className="mapTile" />
 
         <div className="players"> </div>
 
         <div className="cenario"> </div>
 
-        <credits onclick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')">
+        <credits onClick="window.open('https://github.com/drelocatelli/superMarioBrosOnline' ,'_blank')">
             Drelocatelli
         </credits>
             

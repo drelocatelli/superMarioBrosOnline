@@ -13,30 +13,28 @@ export async function initialize(socket) {
 }
 
 function activateKeys(socket) {
-    document.addEventListener('keydown', (key) => {
+    document.addEventListener('keydown', (event) => {
         disableKeyScrolling()
 
         // your player element
         let yourPlayerElement = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === socket.id)
         let currentPlayerPosition = yourPlayerElement.getBoundingClientRect().left
 
-        switch (key.key) {
+        switch (event.code) {
             case 'Space':
             case 'KeyW':
             case 'ArrowUp':
-                socket.emit('keypress', { key: key.code, id: socket.id, position: 'up' })
+                socket.emit('keypress', { key: event.code, id: socket.id, position: 'up' })
                 break;
             case 'KeyA':
             case 'ArrowLeft':
-                socket.emit('keypress', { key: key.code, id: socket.id, position: 'left' })
+                socket.emit('keypress', { key: event.code, id: socket.id, position: 'left' })
                 break;
             case 'KeyD':
             case 'ArrowRight':
-                socket.emit('keypress', { key: key.code, id: socket.id, position: 'right' })
+                socket.emit('keypress', { key: event.code, id: socket.id, position: 'right' })
                 break;
         }
-
-        
 
         movePlayer(socket)
 

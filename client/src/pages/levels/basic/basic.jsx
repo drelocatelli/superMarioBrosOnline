@@ -22,7 +22,7 @@ function keyHandle(socket) {
         
         socket.emit('keypress', {key: key.code, id: socket.id})
         
-        // movePlayer(socket)
+        movePlayer(socket)
         
     })
 }
@@ -65,12 +65,16 @@ function connect(socket) {
             setPlayerToScreen(action, socket)
             switchCharacter(socket)
         })
+        socket.on('logout', (action) => {
+            removePlayer(action)
+        })
     })
 
-    socket.on('player_move', action => {
-        console.log(action)
-    })
+}
 
+function removePlayer(action) {
+    const playerContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === action.id)
+    playerContainer.remove()
 }
 
 function setTotalPlayers(action) {

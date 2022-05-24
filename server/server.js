@@ -54,6 +54,7 @@ io.of('/ws').on('connection', (socket) => {
   socket.on("disconnect", () => {
     console.log('Saiu:', socket.id)
     socket.removeAllListeners();
+    transmit('logout', { id: socket.id });
 
     let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails))
     removeOfUsersDetails = removeOfUsersDetails.filter(userDetail => userDetail.id != socket.id)

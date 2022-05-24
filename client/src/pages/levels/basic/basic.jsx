@@ -67,7 +67,6 @@ function playerMovement(socket) {
         // set host to mario
         if (event.hostId == event.id) {
             let hostContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === event.hostId)
-            console.log(hostContainer)
             if (typeof hostContainer != 'undefined') hostContainer.setAttribute('person', 'mario')
         }
 
@@ -215,6 +214,9 @@ function connect(socket) {
 
 function removePlayer(action) {
     const playerContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === action.id)
+
+    console.log(`%c Saiu do game: ${action.id}`, "background:orange; color:white;")
+    
     playerContainer.remove()
 }
 

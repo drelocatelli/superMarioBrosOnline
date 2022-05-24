@@ -49,7 +49,7 @@ io.of('/ws').on('connection', (socket) => {
   let newConnection = (socket.handshake.address == '::1') ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
   console.log("\nUsuário conectado:", newConnection);
 
-  transmit("login", { users, id: socket.id, ip: newConnection });
+  transmit("login", { users, id: socket.id, ip: newConnection});
 
   socket.on("disconnect", () => {
     console.log('Saiu:', socket.id)
@@ -73,7 +73,11 @@ io.of('/ws').on('connection', (socket) => {
   })
 
   socket.on('keypress', (event) => {
-    transmit('player_move', event)
+    transmit('keypressed', event)
+  })
+
+  socket.on('player_movement', (action) => {
+    transmit('player_move', {...action, hostId: hostDetails.hostId})
   })
 
   function transmit(name, event) {

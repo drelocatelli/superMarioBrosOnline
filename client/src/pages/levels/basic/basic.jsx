@@ -20,21 +20,7 @@ function activateKeys(socket) {
         let yourPlayerElement = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === socket.id)
         let currentPlayerPosition = yourPlayerElement.getBoundingClientRect().left
 
-        switch (event.code) {
-            case 'Space':
-            case 'KeyW':
-            case 'ArrowUp':
-                socket.emit('keypress', { key: event.code, id: socket.id, position: 'up' })
-                break;
-            case 'KeyA':
-            case 'ArrowLeft':
-                socket.emit('keypress', { key: event.code, id: socket.id, position: 'left' })
-                break;
-            case 'KeyD':
-            case 'ArrowRight':
-                socket.emit('keypress', { key: event.code, id: socket.id, position: 'right' })
-                break;
-        }
+        socket.emit('keypress', { key: event.code, id: socket.id })
 
         movePlayer(socket)
 
@@ -43,16 +29,60 @@ function activateKeys(socket) {
 
 function movePlayer(socket) {
 
-    socket.on('player_move', (event) => {
-        console.log(`%c Apertou uma tecla (${event.key}): ${event.id}`, "background:blue; color:white;")
+    socket.on('keypressed', (action) => {
+
+        console.log(`%c Apertou uma tecla (${action.key}): ${action.id}`, "background:blue; color:white;")
 
         let playerContainer = document.querySelectorAll('.player-container')
         let pcontainer = Array.from(playerContainer)
 
-        let currentContainer = pcontainer.find(player => player.id === event.id)
+        let currentContainer = pcontainer.find(player => player.id === action.id)
         let uniqueContainer = currentContainer
 
-        // set player on front of all players
+        switch (action.key) {
+            case 'Space':
+            case 'KeyW':
+            case 'ArrowUp':
+                socket.emit('player_movement', { position: 'up', id: action.id })
+                break;
+            case 'KeyA':
+            case 'ArrowLeft':
+                socket.emit('player_movement', { position: 'left', id: action.id })
+                break;
+            case 'KeyD':
+            case 'ArrowRight':
+                socket.emit('player_movement', { position: 'right', id: action.id })
+                break;
+        }
+
+        playerMovement(socket)
+
+    })
+
+}
+
+function playerMovement(socket) {
+    socket.on('player_move', (event) => {
+
+        // set host to mario
+        if (event.hostId == event.id) {
+            let hostContainer = Array.from(document.querySelectorAll('.player-container')).find(player => player.id === event.hostId)
+            console.log(hostContainer)
+            if (typeof hostContainer != 'undefined') hostContainer.setAttribute('person', 'mario')
+        }
+
+        let playerContainer = document.querySelectorAll('.player-container')
+        let pcontainer = Array.from(playerContainer)
+
+        let uniqueContainer = pcontainer.find(x => x.id === event.id)
+
+        if (uniqueContainer == undefined) {
+            includePlayer(event, socket)
+        }
+
+        let currentPlayer = socket.id
+        let currentContainer = pcontainer.find(x => x.id === currentPlayer)
+
         currentContainer.style.zIndex = '2'
 
         // character control
@@ -63,6 +93,8 @@ function movePlayer(socket) {
         const verticalDeslocationTransition = `0.3s ease-out`
         const horizontalDeslocationTransition = `0.30ms`
 
+
+
         switch (event.position) {
             case 'up':
                 setCharacterPositionUP()
@@ -72,7 +104,6 @@ function movePlayer(socket) {
                 break;
             case 'right':
                 setCharacterPositionRight()
-                // scrollFollowsHost(currentContainer, event);
                 break;
         }
 
@@ -143,10 +174,7 @@ function movePlayer(socket) {
             let newRight = (Number(currentRight) + leftDeslocation)
             uniqueContainer.style.left = `${newRight}px`;
         }
-
-
     })
-
 }
 
 function disableKeyScrolling() {
@@ -196,7 +224,24 @@ function setTotalPlayers(action) {
     totalPlayersEl.innerHTML = `${action.users} player(s)`
 }
 
-async function setPlayerToScreen(action, socket) {
+function includePlayer(event, socket) {
+
+    const players = document.querySelector('.players')
+
+    const playerName = (name) => {
+        return name.substr(0, 5).toUpperCase()
+    }
+
+    players.innerHTML += `
+        <div class="player-container" id="${event.id}" screen="${event.screen}">
+        <span class="name">${playerName(event.id)}</span>
+        
+        <img src="assets/sprites/mario-1.png" class="player">
+        </div>
+        `
+}
+
+function addPlayer(action, socket) {
 
     const players = document.querySelector('.players')
 
@@ -217,6 +262,11 @@ async function setPlayerToScreen(action, socket) {
     playerList.forEach(player => {
         players.innerHTML += player
     })
+}
+
+async function setPlayerToScreen(action, socket) {
+
+    addPlayer(action, socket)
 
     setHost(action, socket)
 
@@ -244,6 +294,7 @@ function setHost(action, socket) {
         let otherPlayers = Array.from(playersContainer).find(player => player.id == action.id)
 
         socket.emit('set_user_details', { id: socket.id })
+
     }
 
 }

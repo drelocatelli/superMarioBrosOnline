@@ -31,7 +31,6 @@ function movePlayer(socket) {
 
     socket.on('player_move', (event) => {
         console.log(`%c Apertou uma tecla (${event.key}): ${event.id}`, "background:blue; color:white;")
-
         
     })
     

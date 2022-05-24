@@ -49,9 +49,7 @@ io.of('/ws').on('connection', (socket) => {
   let newConnection = (socket.handshake.address == '::1') ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
   console.log("\nUsuário conectado:", newConnection);
 
-  socket.broadcast.emit("login", { users, id: socket.id, ip: newConnection });
-  socket.emit("login", { users, id: socket.id, ip: newConnection });
-
+  transmit("login", { users, id: socket.id, ip: newConnection });
 
   socket.on("disconnect", () => {
     console.log('Saiu:', socket.id)
@@ -65,18 +63,22 @@ io.of('/ws').on('connection', (socket) => {
 
   socket.on('set_user_details', (event) => {
     addOrReplaceUsersDetails(event)
-    socket.emit('user_setted', { usersDetails })
+    transmit('user_setted', { usersDetails })
   })
 
   socket.on('set_host_details', (event) => {
     addorReplaceHostDetails(event)
-    console.log("HOST:", hostDetails)
-    socket.emit("host_setted", hostDetails)
+    transmit("host_setted", hostDetails)
   })
 
   socket.on('keypress', (event) => {
-    socket.broadcast.emit('player_move', event)
+    transmit('player_move', event)
   })
+
+  function transmit(name, event) {
+    socket.broadcast.emit(name, event)
+    socket.emit(name, event)
+  }
 
   function addorReplaceHostDetails(event) {
     const index = usersDetails.findIndex(el => el.hostId === event.hostId);

@@ -5,6 +5,115 @@
     font-style: normal;
     font-display: swap;
 }
+
+/*! transparent scroll */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  -webkit-box-shadow: none;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: none;
+}
+
+button#audio{
+  position:fixed;
+  right:0;
+}
+
+.back{
+  position: absolute;
+  bottom:10%;
+  left: 0;
+  image-rendering: pixelated;
+}
+
+.share{
+  font-size:11px;
+  position: fixed;
+  left:50%;
+  transform: translateX(-50%);
+  top:8px;
+  text-align: center;
+  opacity:.2;
+  transition: opacity .4s;
+}
+
+.share:hover{
+  opacity:1;
+}
+
+.credits{
+  position: fixed;
+  bottom: 11.8%;
+  cursor:pointer;
+  right: 5px;
+  /* text-shadow: 2px 2px 0px #fff; */
+  color: #2c2c2c;
+  font-size: 8px;
+  opacity:0.6;
+}
+
+.credits:hover{
+  opacity:1;
+}
+
+
+.share input{
+  text-align: center;
+  font-size: 20px;
+  width:300px;
+  border:0;
+  outline:none;
+  font-family: serif;
+  position:relative;
+  top:15px;
+}
+
+button{
+  position: fixed;
+  cursor: pointer;
+  background: #de5918;
+  color: #ffffff;
+  border: 3px solid #000;
+  box-shadow: inset -2px 1px 0 #ffffff;
+  outline: none;
+  padding: 6px 12px;
+}
+
+*{
+  user-select: none;
+  font-family: 'Pixeled', sans-serif;
+}
+.controls {
+  position: absolute;
+  top: 48vh;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.controls li {
+  list-style: none;
+  font-size: 2.4vh;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 10px;
+}
+
+.controls li:hover {
+  cursor: pointer;
+  background: #000;
+  color: #ccc;
+}
+
+.player-container .name {
+  color: #000;
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document

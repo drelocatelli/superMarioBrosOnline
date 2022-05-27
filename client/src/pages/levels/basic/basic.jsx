@@ -158,10 +158,11 @@ function playerMovement(socket) {
         function setCharacterPositionLeft() {
             let person = uniqueContainer.getAttribute('person')
             setAnimationSide('left', person, uniqueContainer)
-            uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
-            let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
-            let newLeft = (Number(currentLeft) - leftDeslocation)
-            uniqueContainer.style.left = `${newLeft}px`;
+            console.log(person)
+            // uniqueContainer.style.transition = `left ${horizontalDeslocationTransition}`;
+            // let currentLeft = (window.getComputedStyle(uniqueContainer).left).replace(/\D/g, "")
+            // let newLeft = (Number(currentLeft) - leftDeslocation)
+            // uniqueContainer.style.left = `${newLeft}px`;
 
         }
 

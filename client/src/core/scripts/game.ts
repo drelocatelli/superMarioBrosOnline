@@ -7,7 +7,8 @@ class Game extends Server {
 
     constructor() {
         super();
-        //this.listen().connection();
+        this.listen().connection();
+        this.initialAnimation();
     }
 
     create() {
@@ -18,12 +19,16 @@ class Game extends Server {
 
     listen() {
         const connection = () => {
-            this.socket?.on('connect', () => {
-                console.log('e');
-            });
-            this.players.subscribe((players) => {
-                players.forEach((player) => {
-                    player.animate();
+            this.socket?.subscribe((socket) => {
+                socket?.on('login', (e: ILogin) => {
+                    console.log(`%c Entrou no game: ${e.id}`, 'background:green; color:white;');
+                    console.log(e.users);
+                    e.users.forEach((user) => {
+                        this.create().player(new Player(user));
+                    });
+                });
+                socket?.on('logout', (e: { id: string }) => {
+                    console.log(`%c Saiu do game: ${e.id}`, 'background:red; color:white;');
                 });
             });
         };
@@ -32,6 +37,22 @@ class Game extends Server {
             connection,
         };
     }
+
+    initialAnimation() {
+        this.players.subscribe((players) => {
+            players.forEach((player, i) =>
+                setTimeout(() => {
+                    player.animate();
+                }, i * 500),
+            );
+        });
+    }
+}
+
+interface ILogin {
+    id: string;
+    ip: string;
+    users: string[];
 }
 
 export default Game;

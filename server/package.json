@@ -18,7 +18,7 @@
     },
     "scripts": {
         "start": "node .",
-        "dev": "nodemon -e .* -w . -w public",
+        "dev": "nodemon .",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

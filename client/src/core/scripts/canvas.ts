@@ -1,15 +1,7 @@
 class Canvas {
-    el = document.querySelector('canvas') as HTMLCanvasElement;
-    canvas = {
-        el: this.el,
-        context: this.el!.getContext('2d')!,
-    };
+    canvas = document.querySelector('#canvas') as HTMLDivElement;
 
-    constructor() {
-        this.canvas.el.width = window.innerWidth;
-        this.canvas.el.height = window.innerHeight;
-        this.canvas.el.style.setProperty('position', 'fixed');
-    }
+    constructor() {}
 }
 
 export default Canvas;

@@ -1,22 +1,29 @@
 import Canvas from './canvas';
-import Server from '../server';
-import Game from './game';
 
 interface IPlayerAttrib {
     position?: { x: number; y: number };
     velocity?: { x: number; y: number };
 }
 
-const gravity = 0.5;
-
 class Player extends Canvas {
+    id;
     position;
     private width;
     private height;
     velocity;
+    element?: HTMLDivElement;
 
-    constructor(game: Game, props?: IPlayerAttrib) {
+    static defaultProps = {
+        gravity: 0.5,
+        position: {
+            x: 100,
+            y: 100,
+        },
+    };
+
+    constructor(id: string, props?: IPlayerAttrib) {
         super();
+        this.id = id;
         this.position = props?.position ?? {
             x: 100,
             y: 100,
@@ -27,26 +34,44 @@ class Player extends Canvas {
         };
         this.width = 100;
         this.height = 100;
-        game.create().player(this);
     }
 
     draw() {
-        this.canvas.context.fillStyle = 'red';
-        this.canvas.context.fillRect(this.position.x, this.position.y, this.width, this.height);
+        const element = document.createElement('div');
+        element.dataset.id = this.id;
+        this.canvas.appendChild(element);
+        element.style.cssText = `
+            position: absolute;
+            z-index:1;
+            background: red;
+            top: ${this.position.y}px;
+            left: ${this.position.x}px;
+            width: ${this.width}px;
+            height: ${this.height}px;
+        `;
+        this.element = element;
     }
 
     update() {
         this.draw();
         this.position.y += this.velocity.y;
 
-        if (this.position.y + this.height + this.velocity.y <= this.canvas.el.height) this.velocity.y += gravity;
+        if (this.position.y + this.height + this.velocity.y <= this.canvas.offsetHeight) this.velocity.y += Player.defaultProps.gravity;
         else this.velocity.y = 0;
     }
 
     animate() {
         requestAnimationFrame(this.animate.bind(this));
-        this.canvas.context.clearRect(this.position.x, 0, this.canvas.el.width, this.canvas.el.height);
+        let elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
+        // remove avoiding last
+        Array.from(elements)
+            .slice(0, -1)
+            .forEach((element) => {
+                element.remove();
+            });
+
         this.update();
+        this.draw();
     }
 
     static movement() {

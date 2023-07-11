@@ -1,4 +1,5 @@
 import Canvas from './canvas';
+import Platform from './platform';
 
 interface IPlayerAttrib {
     position?: { x: number; y: number };
@@ -35,22 +36,21 @@ class Player extends Canvas {
         stop_velocity: 5,
     };
 
-    constructor(id: string, color: string, currentPlayer: boolean, props?: IPlayerAttrib) {
+    constructor(props: { id: string; color: string; socketId: string; attr?: IPlayerAttrib }) {
         super();
-        this.color = color;
-        this.id = id;
-        this.currentPlayer = currentPlayer;
-        this.position = props?.position ?? {
+        this.color = props.color;
+        this.id = props.id;
+        this.currentPlayer = props.socketId == props.id;
+        this.position = props.attr?.position ?? {
             x: 100,
             y: 100,
         };
-        this.velocity = props?.velocity ?? {
+        this.velocity = props.attr?.velocity ?? {
             x: 0,
             y: 0,
         };
         this.width = 100;
         this.height = 100;
-        console.dir(this.canvas);
     }
 
     draw() {
@@ -102,6 +102,7 @@ class Player extends Canvas {
             });
 
         this.update();
+        this.platforms.forEach((platform) => platform.draw());
 
         const currentPosition = {
             x: elements[elements.length - 1]?.getBoundingClientRect().x,
@@ -113,6 +114,18 @@ class Player extends Canvas {
         } else if (this.keys.left.pressed && currentPosition.x >= Player.defaultProps.velocity) {
             this.velocity.x = -Player.defaultProps.stop_velocity;
         } else this.velocity.x = 0;
+
+        // platform colision detection
+        this.platforms.forEach((platform) => {
+            if (
+                this.position.y + this.height <= platform.position.y &&
+                this.position.y + this.height + this.velocity.y >= platform.position.y &&
+                this.position.x + this.width >= platform.position.x &&
+                this.position.x <= platform.position.x + platform.width
+            ) {
+                this.velocity.y = 0;
+            }
+        });
     }
 }
 

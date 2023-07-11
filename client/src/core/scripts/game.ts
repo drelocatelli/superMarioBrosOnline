@@ -1,12 +1,11 @@
-import Sockets from './sockets/main';
+import Service from './service';
 
-class Game extends Sockets {
+class Game {
     constructor() {
-        super();
         this.disableKeyScrolling();
-        this.sockets.player.listen().connection();
-        this.sockets.player.initialAnimation();
-        this.sockets.player.listen().keyboards();
+        Service.sockets.player.listen().connection();
+        Service.sockets.player.initialAnimation();
+        Service.sockets.player.listen().keyboards();
     }
 
     disableKeyScrolling() {

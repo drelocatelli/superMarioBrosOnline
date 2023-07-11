@@ -28,7 +28,7 @@ class PlayerSocket extends Server {
             this.socket?.subscribe((socket) => {
                 socket?.on('login', (e: ILogin) => {
                     console.log(`%c Joined to game: ${e.id}/${e.ip}`, 'background:green; color:white; font-size:18px;');
-                    e.users.forEach((user) => this.create(new Player(user.id, user.color, user.id === socket.id)));
+                    e.users.forEach((user) => this.create(new Player({ id: user.id, color: user.color, socketId: socket.id })));
                 });
                 socket?.on('logout', (e: { id: string }) => {
                     console.log(`%c Exited from game: ${e.id}`, 'background:red; color:white; font-size:18px;');

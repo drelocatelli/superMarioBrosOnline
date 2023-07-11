@@ -6,13 +6,20 @@ import _ from 'lodash';
 class PlayerSocket extends Server {
     players = new BehaviorSubject<Player[]>([]);
 
+    get(id: string) {
+        return this.players.getValue().find((p) => p.id == id);
+    }
+
     create(player: Player) {
         const payload = _.uniqBy([...this.players.value, player], 'id');
         this.players.next(payload);
     }
 
     remove(id: string) {
-        this.players.value.find((p) => p.id == id)?.remove();
+        this.players
+            .getValue()
+            .find((p) => p.id == id)
+            ?.remove();
         this.players.next(_.reject(this.players.value, { id }));
     }
 
@@ -29,9 +36,59 @@ class PlayerSocket extends Server {
                 });
             });
         };
+        const keyboards = () => {
+            this.socket?.subscribe((socket) => {
+                document.addEventListener('keydown', (e) => {
+                    socket?.emit('keydown', { key: e.code, id: socket.id });
+                });
+
+                document.addEventListener('keyup', (e) => {
+                    socket?.emit('keyup', { key: e.code, id: socket.id });
+                });
+
+                // player movement
+                socket?.on('keydown', (player: { key: string; id: string }) => {
+                    if (this.get(player.id) != undefined)
+                        switch (player.key) {
+                            case 'KeyA':
+                            case 'ArrowLeft':
+                                this.get(player.id)!.keys.left.pressed = true;
+                                break;
+                            case 'KeyD':
+                            case 'ArrowRight':
+                                this.get(player.id)!.keys.right.pressed = true;
+                                break;
+                            case 'Space':
+                            case 'KeyW':
+                            case 'ArrowUp':
+                                this.get(player.id)!.velocity.y -= Player.defaultProps.velocity;
+                                break;
+                        }
+                });
+
+                socket?.on('keyup', (player: { key: string; id: string }) => {
+                    if (this.get(player.id) != undefined)
+                        switch (player.key) {
+                            case 'Space':
+                            case 'KeyW':
+                            case 'ArrowUp':
+                                break;
+                            case 'KeyA':
+                            case 'ArrowLeft':
+                                this.get(player.id)!.keys.left.pressed = false;
+                                break;
+                            case 'KeyD':
+                            case 'ArrowRight':
+                                this.get(player.id)!.keys.right.pressed = false;
+                                break;
+                        }
+                });
+            });
+        };
 
         return {
             connection,
+            keyboards,
         };
     }
 

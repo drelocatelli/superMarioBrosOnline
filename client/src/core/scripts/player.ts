@@ -16,12 +16,23 @@ class Player extends Canvas {
     color: string;
     currentPlayer: boolean;
 
+    keys = {
+        right: {
+            pressed: false,
+        },
+        left: {
+            pressed: false,
+        },
+    };
+
     static defaultProps = {
         gravity: 0.5,
         position: {
             x: 100,
             y: 100,
         },
+        velocity: 20,
+        stop_velocity: 5,
     };
 
     constructor(id: string, color: string, currentPlayer: boolean, props?: IPlayerAttrib) {
@@ -39,6 +50,7 @@ class Player extends Canvas {
         };
         this.width = 100;
         this.height = 100;
+        console.dir(this.canvas);
     }
 
     draw() {
@@ -73,6 +85,7 @@ class Player extends Canvas {
     update() {
         this.draw();
         this.position.y += this.velocity.y;
+        this.position.x += this.velocity.x;
 
         if (this.position.y + this.height + this.velocity.y <= this.canvas.offsetHeight) this.velocity.y += Player.defaultProps.gravity;
         else this.velocity.y = 0;
@@ -80,7 +93,7 @@ class Player extends Canvas {
 
     animate() {
         this.animId = requestAnimationFrame(this.animate.bind(this));
-        let elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
+        let elements: NodeListOf<HTMLDivElement> = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
         // remove avoiding last
         Array.from(elements)
             .slice(0, -1)
@@ -89,20 +102,23 @@ class Player extends Canvas {
             });
 
         this.update();
-    }
 
-    static movement() {
-        document.addEventListener('keydown', ({ code }) => {
-            switch (code) {
-                case 'ArrowUp':
-                    console.log('up');
-                    break;
-                case 'ArrowDown':
-                    console.log('Down');
-                    break;
-            }
-        });
+        const currentPosition = {
+            x: elements[elements.length - 1]?.getBoundingClientRect().x,
+            y: elements[elements.length - 1]?.getBoundingClientRect().y,
+        };
+
+        if (this.keys.right.pressed && currentPosition.x <= this.canvas.getBoundingClientRect().width - 120) {
+            this.velocity.x = Player.defaultProps.stop_velocity;
+        } else if (this.keys.left.pressed && currentPosition.x >= Player.defaultProps.velocity) {
+            this.velocity.x = -Player.defaultProps.stop_velocity;
+        } else this.velocity.x = 0;
     }
 }
 
+interface IPlayerProps {
+    container: NodeListOf<HTMLDivElement>;
+}
+
+export type { IPlayerProps };
 export default Player;

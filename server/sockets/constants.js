@@ -1,5 +1,5 @@
 const globals = {
-    allUsers: new Set(),
+    users: new Set(),
 };
 
 module.exports = globals;

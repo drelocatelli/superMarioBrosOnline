@@ -13,20 +13,28 @@ class UserSocket {
         this.usersDetails = [];
         this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
 
-        globals.allUsers.add({ id: socket.id, color: this.color });
+        this.newConnection = this.socket.handshake.address == '::1' ? '127.0.0.1' : this.socket.handshake.address.replace('::ffff:', '');
 
         //this.users = io.engine.clientsCount;
 
-        this.newConnection = this.socket.handshake.address == '::1' ? '127.0.0.1' : this.socket.handshake.address.replace('::ffff:', '');
+        globals.users.add({ id: socket.id, color: this.color, ip: this.newConnection });
         console.log('\nUsuário conectado:', this.newConnection);
 
-        this.transmit('login', { users: Array.from(globals.allUsers), color: this.color, id: this.socket.id, ip: this.newConnection });
+        // check user already exists by ip
+        //if (Array.from(globals.users).filter((user) => user.ip === this.newConnection).length == 1) {
+        this.transmit('login', { users: Array.from(globals.users), color: this.color, id: this.socket.id, ip: this.newConnection });
+        /*} else {
+            // remove
+            console.log('Player already exists');
+            globals.users.delete(Array.from(globals.users).find((user) => user.ip === this.newConnection));
+        } */
+        console.log('Current users:', globals.users);
 
         this.socket.on('disconnect', () => {
             console.log('Saiu:', this.socket.id);
             this.socket.removeAllListeners();
             this.transmit('logout', { id: this.socket.id });
-            globals.allUsers.delete(Array.from(globals.allUsers).find((user) => user.id === this.socket.id));
+            globals.users.delete(Array.from(globals.users).find((user) => user.id === this.socket.id));
             let removeOfUsersDetails = JSON.parse(JSON.stringify(this.usersDetails));
             removeOfUsersDetails = removeOfUsersDetails.filter((userDetail) => userDetail.id != this.socket.id);
             this.usersDetails = removeOfUsersDetails;
@@ -39,15 +47,19 @@ class UserSocket {
 
         this.socket.on('set_host_details', (event) => {
             addorReplaceHostDetails(event);
-            this.transmit('host_setted', hostDetails);
+            this.transmit('host_setted', this.hostDetails);
         });
 
-        this.socket.on('keypress', (event) => {
-            this.transmit('keypressed', event);
+        this.socket.on('keydown', (event) => {
+            this.transmit('keydown', event);
+        });
+
+        this.socket.on('keyup', (event) => {
+            this.transmit('keyup', event);
         });
 
         this.socket.on('player_movement', (action) => {
-            this.transmit('player_move', { ...action, hostId: hostDetails.hostId });
+            this.transmit('player_move', { ...action, hostId: this.hostDetails.hostId });
         });
     }
 
@@ -61,7 +73,7 @@ class UserSocket {
 
         if (index === -1) {
             // adiciona host se nao existir
-            hostDetails = event;
+            this.hostDetails = event;
         }
     }
 

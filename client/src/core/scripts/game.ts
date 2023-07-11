@@ -38,11 +38,11 @@ class Game extends Server {
             this.socket?.subscribe((socket) => {
                 console.log(socket);
                 socket?.on('login', (e: ILogin) => {
-                    console.log(`%c Entrou no game: ${e.id}/${e.ip}`, 'background:green; color:white; font-size:18px;');
+                    console.log(`%c Joined to game: ${e.id}/${e.ip}`, 'background:green; color:white; font-size:18px;');
                     e.users.forEach((user) => this.create().player(new Player(user.id, user.color, user.id === socket.id)));
                 });
                 socket?.on('logout', (e: { id: string }) => {
-                    console.log(`%c Saiu do game: ${e.id}`, 'background:red; color:white; font-size:18px;');
+                    console.log(`%c Exited from game: ${e.id}`, 'background:red; color:white; font-size:18px;');
                     this.remove().player(e.id);
                 });
             });

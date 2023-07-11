@@ -58,8 +58,8 @@ class UserSocket {
             this.transmit('keyup', event);
         });
 
-        this.socket.on('player_movement', (action) => {
-            this.transmit('player_move', { ...action, hostId: this.hostDetails.hostId });
+        this.socket.on('player_position', (action) => {
+            this.transmit('player_position', action);
         });
     }
 

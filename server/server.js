@@ -6,6 +6,7 @@ const axios = require('axios');
 const http = require('http');
 const socketio = require('socket.io');
 const cors = require('cors');
+const UserSocket = require('./sockets/user');
 
 require('dotenv').config();
 
@@ -37,74 +38,8 @@ app.get('/ip', (req, res) => {
         });
 });
 
-let allUsers = new Set();
-const colors = ['#00FF00', '#0000FF', '#FFFF00', '#FF0000'];
 io.of('/ws').on('connection', (socket) => {
-    let hostDetails = [];
-    let usersDetails = [];
-    let color = colors[Math.floor(Math.random() * colors.length)];
-
-    allUsers.add({ id: socket.id, color });
-
-    let users = io.engine.clientsCount;
-
-    let newConnection = socket.handshake.address == '::1' ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
-    console.log('\nUsuário conectado:', newConnection);
-
-    transmit('login', { users: Array.from(allUsers), color, id: socket.id, ip: newConnection });
-
-    socket.on('disconnect', () => {
-        console.log('Saiu:', socket.id);
-        socket.removeAllListeners();
-        transmit('logout', { id: socket.id });
-        allUsers.delete(Array.from(allUsers).find((user) => user.id === socket.id));
-        let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails));
-        removeOfUsersDetails = removeOfUsersDetails.filter((userDetail) => userDetail.id != socket.id);
-        usersDetails = removeOfUsersDetails;
-    });
-
-    socket.on('set_user_details', (event) => {
-        addOrReplaceUsersDetails(event);
-        transmit('user_setted', { usersDetails });
-    });
-
-    socket.on('set_host_details', (event) => {
-        addorReplaceHostDetails(event);
-        transmit('host_setted', hostDetails);
-    });
-
-    socket.on('keypress', (event) => {
-        transmit('keypressed', event);
-    });
-
-    socket.on('player_movement', (action) => {
-        transmit('player_move', { ...action, hostId: hostDetails.hostId });
-    });
-
-    function transmit(name, event) {
-        socket.broadcast.emit(name, event);
-        socket.emit(name, event);
-    }
-
-    function addorReplaceHostDetails(event) {
-        const index = usersDetails.findIndex((el) => el.hostId === event.hostId);
-
-        if (index === -1) {
-            // adiciona host se nao existir
-            hostDetails = event;
-        }
-    }
-
-    function addOrReplaceUsersDetails(event) {
-        const index = usersDetails.findIndex((el) => el.id === event.id);
-
-        if (index == -1) {
-            // adiciona usuario se nao existir
-            usersDetails.push(event);
-        }
-
-        console.log('USERS:', usersDetails);
-    }
+    new UserSocket(socket);
 });
 
 server.listen(process.env.PORT || 3001);

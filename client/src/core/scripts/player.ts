@@ -109,6 +109,12 @@ class Player extends Canvas {
             y: elements[elements.length - 1]?.getBoundingClientRect().y,
         };
 
+        console.log(currentPosition.y);
+        if (currentPosition.y < 0) {
+            this.position.y = 0;
+            this.velocity.y = 0;
+        }
+
         if (this.keys.right.pressed && currentPosition.x <= this.canvas.getBoundingClientRect().width - 120) {
             this.velocity.x = Player.defaultProps.stop_velocity;
         } else if (this.keys.left.pressed && currentPosition.x >= Player.defaultProps.velocity) {

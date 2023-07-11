@@ -1,6 +1,7 @@
 import Server from '@core/server';
 import Player from './player';
 import { BehaviorSubject } from 'rxjs';
+import _ from 'lodash';
 
 class Game extends Server {
     players = new BehaviorSubject<Player[]>([]);
@@ -12,8 +13,22 @@ class Game extends Server {
     }
 
     create() {
+        const player = (player: Player) => {
+            const payload = _.uniqBy([...this.players.value, player], 'id');
+            this.players.next(payload);
+        };
+
         return {
-            player: (player: Player) => this.players.next([...this.players.value, player]),
+            player,
+        };
+    }
+
+    remove() {
+        const player = (id: string) => {
+            this.players.next(_.reject(this.players.value, { id }));
+        };
+        return {
+            player,
         };
     }
 
@@ -22,13 +37,11 @@ class Game extends Server {
             this.socket?.subscribe((socket) => {
                 socket?.on('login', (e: ILogin) => {
                     console.log(`%c Entrou no game: ${e.id}`, 'background:green; color:white;');
-                    console.log(e.users);
-                    e.users.forEach((user) => {
-                        this.create().player(new Player(user));
-                    });
+                    e.users.forEach((user) => this.create().player(new Player(user)));
                 });
                 socket?.on('logout', (e: { id: string }) => {
                     console.log(`%c Saiu do game: ${e.id}`, 'background:red; color:white;');
+                    this.remove().player(e.id);
                 });
             });
         };
@@ -40,6 +53,7 @@ class Game extends Server {
 
     initialAnimation() {
         this.players.subscribe((players) => {
+            console.log(players);
             players.forEach((player, i) =>
                 setTimeout(() => {
                     player.animate();

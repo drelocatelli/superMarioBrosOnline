@@ -37,25 +37,25 @@ app.get('/ip', (req, res) => {
         });
 });
 
-let allUsers = [];
+let allUsers = new Set();
 io.of('/ws').on('connection', (socket) => {
     let hostDetails = [];
     let usersDetails = [];
 
-    allUsers.push(socket.id);
+    allUsers.add(socket.id);
 
     let users = io.engine.clientsCount;
 
     let newConnection = socket.handshake.address == '::1' ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
     console.log('\nUsuário conectado:', newConnection);
 
-    transmit('login', { users: allUsers, id: socket.id, ip: newConnection });
+    transmit('login', { users: Array.from(allUsers), id: socket.id, ip: newConnection });
 
     socket.on('disconnect', () => {
         console.log('Saiu:', socket.id);
         socket.removeAllListeners();
         transmit('logout', { id: socket.id });
-        allUsers = allUsers.filter((user) => user != socket.id);
+        allUsers.delete(Array.from(allUsers).find((user) => user === socket.id));
         let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails));
         removeOfUsersDetails = removeOfUsersDetails.filter((userDetail) => userDetail.id != socket.id);
         usersDetails = removeOfUsersDetails;

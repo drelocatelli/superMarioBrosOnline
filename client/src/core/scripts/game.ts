@@ -25,6 +25,7 @@ class Game extends Server {
 
     remove() {
         const player = (id: string) => {
+            this.players.value.find((p) => p.id == id)?.remove();
             this.players.next(_.reject(this.players.value, { id }));
         };
         return {
@@ -37,7 +38,7 @@ class Game extends Server {
             this.socket?.subscribe((socket) => {
                 socket?.on('login', (e: ILogin) => {
                     console.log(`%c Entrou no game: ${e.id}`, 'background:green; color:white;');
-                    e.users.forEach((user) => this.create().player(new Player(user)));
+                    e.users.forEach((user) => this.create().player(new Player(user.id, user.color)));
                 });
                 socket?.on('logout', (e: { id: string }) => {
                     console.log(`%c Saiu do game: ${e.id}`, 'background:red; color:white;');
@@ -66,7 +67,10 @@ class Game extends Server {
 interface ILogin {
     id: string;
     ip: string;
-    users: string[];
+    users: {
+        id: string;
+        color: string;
+    }[];
 }
 
 export default Game;

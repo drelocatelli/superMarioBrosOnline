@@ -38,24 +38,26 @@ app.get('/ip', (req, res) => {
 });
 
 let allUsers = new Set();
+const colors = ['#00FF00', '#0000FF', '#FFFF00', '#FF0000'];
 io.of('/ws').on('connection', (socket) => {
     let hostDetails = [];
     let usersDetails = [];
+    let color = colors[Math.floor(Math.random() * colors.length)];
 
-    allUsers.add(socket.id);
+    allUsers.add({ id: socket.id, color });
 
     let users = io.engine.clientsCount;
 
     let newConnection = socket.handshake.address == '::1' ? '127.0.0.1' : socket.handshake.address.replace('::ffff:', '');
     console.log('\nUsuário conectado:', newConnection);
 
-    transmit('login', { users: Array.from(allUsers), id: socket.id, ip: newConnection });
+    transmit('login', { users: Array.from(allUsers), color, id: socket.id, ip: newConnection });
 
     socket.on('disconnect', () => {
         console.log('Saiu:', socket.id);
         socket.removeAllListeners();
         transmit('logout', { id: socket.id });
-        allUsers.delete(Array.from(allUsers).find((user) => user === socket.id));
+        allUsers.delete(Array.from(allUsers).find((user) => user.id === socket.id));
         let removeOfUsersDetails = JSON.parse(JSON.stringify(usersDetails));
         removeOfUsersDetails = removeOfUsersDetails.filter((userDetail) => userDetail.id != socket.id);
         usersDetails = removeOfUsersDetails;

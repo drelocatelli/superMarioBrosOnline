@@ -12,6 +12,8 @@ class Player extends Canvas {
     private height;
     velocity;
     element?: HTMLDivElement;
+    animId?: number;
+    color: string;
 
     static defaultProps = {
         gravity: 0.5,
@@ -21,8 +23,9 @@ class Player extends Canvas {
         },
     };
 
-    constructor(id: string, props?: IPlayerAttrib) {
+    constructor(id: string, color: string, props?: IPlayerAttrib) {
         super();
+        this.color = color;
         this.id = id;
         this.position = props?.position ?? {
             x: 100,
@@ -40,16 +43,29 @@ class Player extends Canvas {
         const element = document.createElement('div');
         element.dataset.id = this.id;
         this.canvas.appendChild(element);
+
         element.style.cssText = `
             position: absolute;
             z-index:1;
-            background: red;
+            background: ${this.color};
             top: ${this.position.y}px;
             left: ${this.position.x}px;
             width: ${this.width}px;
             height: ${this.height}px;
         `;
         this.element = element;
+    }
+
+    remove() {
+        if (this.animId) {
+            let removeAnim = requestAnimationFrame(this.remove.bind(this));
+            let containers = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
+            containers.forEach((container) => container.remove());
+            cancelAnimationFrame(this.animId);
+            if (containers.length == 0) {
+                cancelAnimationFrame(removeAnim);
+            }
+        }
     }
 
     update() {
@@ -61,7 +77,7 @@ class Player extends Canvas {
     }
 
     animate() {
-        requestAnimationFrame(this.animate.bind(this));
+        this.animId = requestAnimationFrame(this.animate.bind(this));
         let elements = this.canvas.querySelectorAll(`[data-id="${this.id}"]`);
         // remove avoiding last
         Array.from(elements)
@@ -71,7 +87,6 @@ class Player extends Canvas {
             });
 
         this.update();
-        this.draw();
     }
 
     static movement() {

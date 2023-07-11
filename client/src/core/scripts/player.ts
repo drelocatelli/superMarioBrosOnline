@@ -1,5 +1,5 @@
 import Canvas from './canvas';
-import Platform from './platform';
+import Service from './service';
 
 interface IPlayerAttrib {
     position?: { x: number; y: number };
@@ -29,10 +29,11 @@ class Player extends Canvas {
     static defaultProps = {
         gravity: 0.5,
         position: {
-            x: 100,
-            y: 100,
+            x: 20,
+            y: 20,
         },
-        velocity: 20,
+        maxJumpPos: 200, // less than 200 more tall, triple jump mode
+        velocity: 10,
         stop_velocity: 5,
     };
 
@@ -42,8 +43,8 @@ class Player extends Canvas {
         this.id = props.id;
         this.currentPlayer = props.socketId == props.id;
         this.position = props.attr?.position ?? {
-            x: 100,
-            y: 100,
+            x: 20,
+            y: 20,
         };
         this.velocity = props.attr?.velocity ?? {
             x: 0,
@@ -102,27 +103,39 @@ class Player extends Canvas {
             });
 
         this.update();
-        this.platforms.forEach((platform) => platform.draw());
 
         const currentPosition = {
             x: elements[elements.length - 1]?.getBoundingClientRect().x,
             y: elements[elements.length - 1]?.getBoundingClientRect().y,
+            canvas: this.canvas.getBoundingClientRect(),
         };
 
-        console.log(currentPosition.y);
-        if (currentPosition.y < 0) {
+        if (currentPosition.y < currentPosition.canvas.y) {
             this.position.y = 0;
             this.velocity.y = 0;
         }
 
-        if (this.keys.right.pressed && currentPosition.x <= this.canvas.getBoundingClientRect().width - 120) {
+        if (this.keys.right.pressed) {
             this.velocity.x = Player.defaultProps.stop_velocity;
-        } else if (this.keys.left.pressed && currentPosition.x >= Player.defaultProps.velocity) {
+        } else if (
+            this.keys.left.pressed &&
+            currentPosition.x >= Player.defaultProps.velocity &&
+            currentPosition.x >= currentPosition.canvas.x + 10
+        ) {
             this.velocity.x = -Player.defaultProps.stop_velocity;
         } else this.velocity.x = 0;
 
+        // move platform with keys
+        Service.sockets.platforms.elements.forEach((platform) => {
+            if (this.keys.right.pressed) {
+                platform.position.x -= this.velocity.y;
+            } else if (this.canReturnBack && this.keys.left.pressed) {
+                platform.position.x += this.velocity.y;
+            }
+        });
+
         // platform colision detection
-        this.platforms.forEach((platform) => {
+        Service.sockets.platforms.elements.forEach((platform) => {
             if (
                 this.position.y + this.height <= platform.position.y &&
                 this.position.y + this.height + this.velocity.y >= platform.position.y &&

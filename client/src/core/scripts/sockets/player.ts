@@ -1,26 +1,22 @@
 import Server from '@core/server';
 import Player from '../player';
-import { BehaviorSubject } from 'rxjs';
 import _ from 'lodash';
 
 class PlayerSocket extends Server {
-    players = new BehaviorSubject<Player[]>([]);
+    players: Player[] = [];
 
     get(id: string) {
-        return this.players.getValue().find((p) => p.id == id);
+        return this.players.find((p) => p.id == id);
     }
 
     create(player: Player) {
-        const payload = _.uniqBy([...this.players.value, player], 'id');
-        this.players.next(payload);
+        this.players = _.uniqBy([...this.players, player], 'id');
+        this.initialAnimation(player.id);
     }
 
     remove(id: string) {
-        this.players
-            .getValue()
-            .find((p) => p.id == id)
-            ?.remove();
-        this.players.next(_.reject(this.players.value, { id }));
+        this.players.find((p) => p.id == id)?.remove();
+        this.players = _.reject(this.players, { id });
     }
 
     listen() {
@@ -44,6 +40,7 @@ class PlayerSocket extends Server {
 
                 document.addEventListener('keyup', (e) => {
                     socket?.emit('keyup', { key: e.code, id: socket.id });
+                    //socket?.emit('player_position', { position: this.get(socket.id)?.position, id: socket.id });
                 });
 
                 // player movement
@@ -61,7 +58,10 @@ class PlayerSocket extends Server {
                             case 'Space':
                             case 'KeyW':
                             case 'ArrowUp':
-                                this.get(player.id)!.velocity.y -= Player.defaultProps.velocity;
+                                const p = this.get(player.id)!;
+                                if (p.position.y >= Player.defaultProps.maxJumpPos) {
+                                    p.velocity.y -= Player.defaultProps.velocity;
+                                }
                                 break;
                         }
                 });
@@ -83,6 +83,12 @@ class PlayerSocket extends Server {
                                 break;
                         }
                 });
+
+                // player position
+                socket?.on('player_position', (props: { id: string; position: { x: number; y: number } }) => {
+                    const player = this.get(props.id);
+                    if (player) player.position = props.position;
+                });
             });
         };
 
@@ -92,15 +98,8 @@ class PlayerSocket extends Server {
         };
     }
 
-    initialAnimation() {
-        this.players.subscribe((players) => {
-            console.log(players);
-            players.forEach((player, i) =>
-                setTimeout(() => {
-                    player.animate();
-                }, i * 500),
-            );
-        });
+    initialAnimation(id: string) {
+        this.get(id)?.animate();
     }
 }
 

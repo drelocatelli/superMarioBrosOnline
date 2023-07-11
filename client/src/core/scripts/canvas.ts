@@ -1,13 +1,10 @@
-import Platform from './platform';
+import PlatformSocket from './sockets/platform';
 
 class Canvas {
     canvas = document.querySelector('#canvas') as HTMLDivElement;
-    platforms: Platform[] = [];
+    canReturnBack = false;
 
-    constructor() {
-        this.platforms.push(new Platform(this.canvas, { position: { y: 200, x: 500 } }));
-        console.log(this.platforms);
-    }
+    constructor() {}
 }
 
 export default Canvas;

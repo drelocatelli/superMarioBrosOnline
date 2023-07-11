@@ -18,7 +18,6 @@ class UserSocket {
         //this.users = io.engine.clientsCount;
 
         globals.users.add({ id: socket.id, color: this.color, ip: this.newConnection });
-        console.log('\nUsuário conectado:', this.newConnection);
 
         // check user already exists by ip
         //if (Array.from(globals.users).filter((user) => user.ip === this.newConnection).length == 1) {
@@ -28,7 +27,6 @@ class UserSocket {
             console.log('Player already exists');
             globals.users.delete(Array.from(globals.users).find((user) => user.ip === this.newConnection));
         } */
-        console.log('Current users:', globals.users);
 
         this.socket.on('disconnect', () => {
             console.log('Saiu:', this.socket.id);

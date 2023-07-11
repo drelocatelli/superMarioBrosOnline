@@ -1,5 +1,3 @@
-import Canvas from './canvas';
-
 interface IProps {
     background?: string;
     position?: {
@@ -23,7 +21,6 @@ class Platform {
     height = 20;
 
     constructor(canvas: HTMLDivElement, props?: IProps) {
-        console.log(props);
         this.canvas = canvas;
         this.element = document.createElement('div');
         this.background = props?.background ?? this.background;

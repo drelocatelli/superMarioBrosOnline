@@ -36,12 +36,13 @@ class Game extends Server {
     listen() {
         const connection = () => {
             this.socket?.subscribe((socket) => {
+                console.log(socket);
                 socket?.on('login', (e: ILogin) => {
-                    console.log(`%c Entrou no game: ${e.id}`, 'background:green; color:white;');
-                    e.users.forEach((user) => this.create().player(new Player(user.id, user.color)));
+                    console.log(`%c Entrou no game: ${e.id}/${e.ip}`, 'background:green; color:white; font-size:18px;');
+                    e.users.forEach((user) => this.create().player(new Player(user.id, user.color, user.id === socket.id)));
                 });
                 socket?.on('logout', (e: { id: string }) => {
-                    console.log(`%c Saiu do game: ${e.id}`, 'background:red; color:white;');
+                    console.log(`%c Saiu do game: ${e.id}`, 'background:red; color:white; font-size:18px;');
                     this.remove().player(e.id);
                 });
             });

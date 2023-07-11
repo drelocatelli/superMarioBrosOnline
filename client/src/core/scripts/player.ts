@@ -14,6 +14,7 @@ class Player extends Canvas {
     element?: HTMLDivElement;
     animId?: number;
     color: string;
+    currentPlayer: boolean;
 
     static defaultProps = {
         gravity: 0.5,
@@ -23,10 +24,11 @@ class Player extends Canvas {
         },
     };
 
-    constructor(id: string, color: string, props?: IPlayerAttrib) {
+    constructor(id: string, color: string, currentPlayer: boolean, props?: IPlayerAttrib) {
         super();
         this.color = color;
         this.id = id;
+        this.currentPlayer = currentPlayer;
         this.position = props?.position ?? {
             x: 100,
             y: 100,

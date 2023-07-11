@@ -12,6 +12,7 @@ class PlayerSocket extends Server {
     create(player: Player) {
         this.players = _.uniqBy([...this.players, player], 'id');
         this.initialAnimation(player.id);
+        console.log(this.players);
     }
 
     remove(id: string) {

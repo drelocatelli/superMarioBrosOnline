@@ -40,6 +40,10 @@ app.get('/ip', (req, res) => {
 
 io.of('/ws').on('connection', (socket) => {
     new UserSocket(socket);
+
+    socket.onopen = function () {
+        console.log('WebSocket connection established.');
+    };
 });
 
 server.listen(process.env.PORT || 3001);

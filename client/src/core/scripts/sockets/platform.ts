@@ -1,10 +1,13 @@
+import Server from '@core/server';
 import Platform from '../platform';
 
-class PlatformSocket {
+class PlatformSocket extends Server {
     canvas = document.querySelector('#canvas') as HTMLDivElement;
     elements = new Set<Platform>();
 
-    constructor() {}
+    constructor() {
+        super();
+    }
 
     create() {
         this.elements.add(new Platform(this.canvas));

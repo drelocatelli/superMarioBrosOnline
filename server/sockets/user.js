@@ -32,15 +32,20 @@ class UserSocket {
         });
 
         this.socket.on('keydown', (event) => {
-            this.transmit('keydown', event);
+            this.socket.broadcast.emit('keydown', event);
         });
 
         this.socket.on('keyup', (event) => {
-            this.transmit('keyup', event);
+            this.socket.broadcast.emit('keyup', event);
         });
 
         this.socket.on('player_position', (action) => {
             this.transmit('player_position', action);
+        });
+
+        this.socket.on('screen_level', (action) => {
+            console.log(action);
+            this.socket.broadcast.emit('screen_level', action);
         });
     }
 

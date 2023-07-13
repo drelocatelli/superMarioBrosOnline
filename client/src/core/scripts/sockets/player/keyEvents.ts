@@ -6,11 +6,42 @@ function KeyEventsSocket(this: PlayerSocket) {
     const listen = () => {
         document.addEventListener('keydown', (e) => {
             socket.emit('keydown', { key: e.code, id: socket.id });
+            const currentPlayer = this.players.find((player) => player.currentPlayer);
+            if (currentPlayer != undefined) {
+                switch (e.key) {
+                    case 'KeyA':
+                    case 'ArrowLeft':
+                        currentPlayer.keys.left.pressed = true;
+                        break;
+                    case 'KeyD':
+                    case 'ArrowRight':
+                        currentPlayer.keys.right.pressed = true;
+                        break;
+                    case 'Space':
+                    case 'KeyW':
+                    case 'ArrowUp':
+                        currentPlayer.speed.y -= Player.defaultProps.speed;
+                        // }
+                        break;
+                }
+            }
         });
 
         document.addEventListener('keyup', (e) => {
             socket.emit('keyup', { key: e.code, id: socket.id });
-            //socket.emit('player_position', { position: this.get(socket.id)?.position, id: socket.id });
+            const currentPlayer = this.players.find((player) => player.currentPlayer);
+            if (currentPlayer != undefined) {
+                switch (e.key) {
+                    case 'KeyA':
+                    case 'ArrowLeft':
+                        currentPlayer.keys.left.pressed = false;
+                        break;
+                    case 'KeyD':
+                    case 'ArrowRight':
+                        currentPlayer.keys.right.pressed = false;
+                        break;
+                }
+            }
         });
 
         socket.on('keydown', (player: { key: string; id: string }) => {

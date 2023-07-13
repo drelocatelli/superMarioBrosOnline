@@ -20,19 +20,23 @@ function Movement(this: Player) {
         if (this.position.x > this.canvas.offsetWidth) {
             this.position.x = 0;
             this.screenLevel += 1;
+            Service.sockets.player.setScreenLevel(this.id, this.screenLevel);
             this.keys.left.pressed = false;
         } else if (this.position.x <= 0 && this.canReturnBack) {
             if (this.screenLevel >= 1) {
                 this.screenLevel -= 1;
+                Service.sockets.player.setScreenLevel(this.id, this.screenLevel);
             } else if (this.screenLevel == 0) {
                 return;
             }
             this.position.x = this.canvas.offsetWidth;
             this.keys.right.pressed = false;
         }
+        // set screen level indicator
+        (document.querySelector('#screenLevel') as HTMLDivElement).innerHTML = this.screenLevel.toString();
     };
 
-    const scrollMoviment = () => {
+    const scrollMovement = () => {
         if (this.keys.right.pressed) {
             this.scrollOffset += Player.defaultProps.stop_speed;
 
@@ -59,7 +63,7 @@ function Movement(this: Player) {
                 }
             }
         });
-        scrollMoviment();
+        scrollMovement();
     };
 
     const animate = () => {

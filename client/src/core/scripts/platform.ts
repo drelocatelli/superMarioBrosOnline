@@ -42,7 +42,6 @@ class Platform {
         this.height = props?.height ?? this.height;
         this.background = props?.background ?? this.background;
         this.details = props?.details ?? this.details;
-        console.log(this.details);
         this.create();
     }
 

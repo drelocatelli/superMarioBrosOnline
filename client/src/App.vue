@@ -1,17 +1,16 @@
 <template>
     <div id="edge">
-        <splash />
-        <div id="screen">a</div>
+        <div id="screen">
+            <div id="screen-level">Screen: <span id="screenLevel">0</span></div>
+        </div>
         <div id="canvas"></div>
     </div>
 </template>
 
 <script lang="ts">
 import Game from '@core/scripts/game';
-import splash from './components/splash.vue';
 
 export default {
-    components: { splash },
     mounted() {
         new Game();
     },
@@ -19,7 +18,27 @@ export default {
 </script>
 
 <style lang="scss">
+#screen {
+    z-index: 100;
+    color: #000;
+    position: relative;
+    top: 0;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    padding: 10px;
+}
+
+#screen * {
+    user-select: none;
+}
+
+#screen-level {
+    position: absolute;
+    right: 15px;
+}
+
 body {
+    font-family: cursive, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;

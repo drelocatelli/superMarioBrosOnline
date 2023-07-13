@@ -7,9 +7,8 @@ class Game {
         console.log('game started');
         this.disableKeyScrolling();
         Service.sockets.player.listen().connection();
-        let splashEl = document.getElementById('splash') as HTMLDivElement;
         Service.sockets.player.listen().keyEvents();
-        splashEl.style.display = 'none';
+        Service.sockets.player.listen().screenLevel();
         this.createPlatforms();
     }
 

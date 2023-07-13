@@ -10,6 +10,7 @@ interface IGameStore {
     platforms: Platform[];
     stage?: Stage;
     layer?: Layer;
+    minOpacity: number;
 }
 
 interface IUseGlobalState {
@@ -21,7 +22,7 @@ interface IUseGlobalState {
 }
 
 const useGlobalState = defineStore('global', () => {
-    const game = ref<IGameStore>({ winPositionX: 500, started: false, platforms: [], stage: undefined, layer: undefined });
+    const game = ref<IGameStore>({ winPositionX: 500, started: false, platforms: [], stage: undefined, layer: undefined, minOpacity: 0.2 });
 
     function setStage(stage: Stage) {
         game.value.stage = stage;

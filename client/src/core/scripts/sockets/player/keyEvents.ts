@@ -45,6 +45,8 @@ function KeyEventsSocket(this: PlayerSocket) {
         });
 
         socket.on('keydown', (player: { key: string; id: string }) => {
+            const event = player;
+            // console.log('keydown', event);
             if (this.get(player.id) != undefined)
                 switch (player.key) {
                     case 'KeyA':
@@ -66,6 +68,8 @@ function KeyEventsSocket(this: PlayerSocket) {
                 }
         });
         socket.on('keyup', (player: { key: string; id: string }) => {
+            const event = player;
+            // console.log('keyup', event);
             if (this.get(player.id) != undefined)
                 switch (player.key) {
                     case 'Space':

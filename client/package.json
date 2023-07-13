@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "konva": "^9.2.0",
+    "pinia": "^2.1.4",
     "rxjs": "^7.8.1",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",

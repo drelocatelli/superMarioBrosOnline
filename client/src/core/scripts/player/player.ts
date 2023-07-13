@@ -22,7 +22,7 @@ class Player extends Canvas {
     elements: Rect[] = [];
     animId?: number;
     color: string;
-    opacity = 1;
+    opacity;
     currentPlayer: boolean;
     currentPosition?: {
         x: number;
@@ -51,6 +51,7 @@ class Player extends Canvas {
 
     constructor(props: { id: string; color: string; socketId: string; attr?: IPlayerAttrib }) {
         super();
+        this.opacity = 1;
         this.color = props.color;
         this.id = props.id;
         this.currentPlayer = props.socketId == props.id;

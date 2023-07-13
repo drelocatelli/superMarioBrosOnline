@@ -22,6 +22,7 @@ class Player extends Canvas {
     elements: Rect[] = [];
     animId?: number;
     color: string;
+    opacity = 1;
     currentPlayer: boolean;
     currentPosition?: {
         x: number;

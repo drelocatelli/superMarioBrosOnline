@@ -13,6 +13,7 @@ function Visual(this: Player) {
             width: this.width,
             height: this.height,
             fill: this.color,
+            opacity: this.opacity,
         });
         game.layer.add(element);
         game.stage.add(game.layer);

@@ -1,13 +1,17 @@
 <template>
     <div id="edge">
+        <splash />
+        <div id="screen">a</div>
         <div id="canvas"></div>
     </div>
 </template>
 
 <script lang="ts">
 import Game from '@core/scripts/game';
+import splash from './components/splash.vue';
 
 export default {
+    components: { splash },
     mounted() {
         new Game();
     },
@@ -24,7 +28,6 @@ body {
 
 #edge {
     display: flex;
-    background-color: #333;
     width: 800px;
     height: 500px;
     position: absolute;
@@ -38,6 +41,5 @@ body {
     position: absolute;
     width: -webkit-fill-available;
     height: -webkit-fill-available;
-    border: 1px solid #fff;
 }
 </style>

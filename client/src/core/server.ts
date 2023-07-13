@@ -1,26 +1,20 @@
-import { BehaviorSubject } from 'rxjs';
-import { Socket, io } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
-class Server {
-    socket = new BehaviorSubject<Socket | undefined>(undefined);
+let serverUrl = 'http://localhost:'.concat(import.meta.env.VITE_WS_PORT);
+let socket = io(serverUrl);
 
-    constructor() {
-        this.defineSocket();
-    }
-
-    async defineSocket() {
-        let serverUrl = 'http://localhost:'.concat(import.meta.env.VITE_WS_PORT);
-        try {
-            const localServer = await fetch(serverUrl + '/ip');
-            if (localServer.status == 404) {
-                serverUrl = 'http://' + import.meta.env.VITE_WS_SERVER.concat(':' + import.meta.env.VITE_WS_PORT);
-            }
-        } catch (err) {
-            console.dir({ err });
+async function Server() {
+    try {
+        const localServer = await fetch(serverUrl + '/ip');
+        if (localServer.status == 404) {
+            serverUrl = 'http://' + import.meta.env.VITE_WS_SERVER.concat(':' + import.meta.env.VITE_WS_PORT);
         }
-        serverUrl = `${serverUrl}/ws`;
-        this.socket?.next(io(serverUrl));
+    } catch (err) {
+        console.dir({ err });
     }
+    serverUrl = `${serverUrl}/ws`;
+    socket = io(serverUrl);
 }
+await Server();
 
-export default Server;
+export default socket;

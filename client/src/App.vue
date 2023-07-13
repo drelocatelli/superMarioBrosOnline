@@ -1,6 +1,11 @@
 <template>
     <div id="edge">
         <div id="screen">
+            <div id="screen-players">
+                <div id="players-left" v-for="player in globalState.game.playersLeft.slice(0, 3)">
+                    <li>{{ player.id }} - {{ player.direction }}</li>
+                </div>
+            </div>
             <div id="screen-level">Screen: <span id="screenLevel">0</span></div>
         </div>
         <div id="canvas"></div>
@@ -8,9 +13,15 @@
 </template>
 
 <script lang="ts">
+import useGlobalState from '@core/store/global';
 import Game from '@core/scripts/game';
 
 export default {
+    setup() {
+        return {
+            globalState: useGlobalState(),
+        };
+    },
     mounted() {
         new Game();
     },

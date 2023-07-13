@@ -5,7 +5,10 @@ import Player from './player';
 import useGlobalState, { IUseGlobalState } from '@core/store/global';
 
 function Movement(this: Player) {
+    //@ts-ignore
     const { game: gameState, decrementPlatformPositionX }: IUseGlobalState = useGlobalState();
+    //@ts-ignore
+    const globalState: IUseGlobalState = useGlobalState();
 
     const gravity = () => {
         this.position.y += this.speed.y;
@@ -67,10 +70,19 @@ function Movement(this: Player) {
     };
 
     const screenLevelDiff = () => {
-        // set player opacity of screen level
+        // set player opacity of screen level diff
         if (!this.currentPlayer) {
             const currentPlayer = Service.sockets.player.players.find((player) => player.currentPlayer);
-            this.opacity = currentPlayer?.screenLevel === this.screenLevel ? 1 : gameState.minOpacity;
+            if (currentPlayer) {
+                if (currentPlayer.screenLevel === this.screenLevel) {
+                    this.opacity = 1;
+                    globalState.setPlayerLeft().remove({ id: this.id });
+                } else {
+                    this.opacity = gameState.minOpacity;
+                    const leftPos = currentPlayer.screenLevel > this.screenLevel;
+                    globalState.setPlayerLeft().add({ id: this.id, direction: leftPos ? 'left' : 'right' });
+                }
+            }
         }
     };
 

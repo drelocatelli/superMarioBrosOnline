@@ -7,6 +7,7 @@ const http = require('http');
 const socketio = require('socket.io');
 const cors = require('cors');
 const UserSocket = require('./sockets/user');
+const GameSocket = require('./sockets/game');
 
 require('dotenv').config();
 
@@ -39,6 +40,8 @@ app.get('/ip', (req, res) => {
 });
 
 io.of('/ws').on('connection', (socket) => {
+    const connectionsCount = io.engine.clientsCount;
+    new GameSocket(socket, connectionsCount);
     new UserSocket(socket);
 });
 

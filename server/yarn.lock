@@ -865,11 +865,6 @@ negotiator@0.6.3:
   resolved "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
-neo-async@^2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
-  integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
-
 node-bin-setup@^1.0.0:
   version "1.0.6"
   resolved "https://registry.npmjs.org/node-bin-setup/-/node-bin-setup-1.0.6.tgz"
@@ -1076,13 +1071,6 @@ safe-buffer@5.2.1:
   version "2.1.2"
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
-
-sass-loader@^13.3.2:
-  version "13.3.2"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-13.3.2.tgz#460022de27aec772480f03de17f5ba88fa7e18c6"
-  integrity sha512-CQbKl57kdEv+KDLquhC+gE3pXt74LEAzm+tzywcA0/aHZuub8wTErbjAoNI57rPUWRYRNC5WUnNl8eGJNbDdwg==
-  dependencies:
-    neo-async "^2.6.2"
 
 semver-diff@^3.1.1:
   version "3.1.1"

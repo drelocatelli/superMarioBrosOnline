@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
     readonly VITE_WS_SERVER: string;
     readonly VITE_WS_PORT: string;
+    readonly VITE_PRIVATE_IP: string;
 }
 
 interface ImportMeta {

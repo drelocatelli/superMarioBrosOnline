@@ -1,20 +1,7 @@
 import { io } from 'socket.io-client';
 
-let serverUrl = `http://${import.meta.env.VITE_PRIVATE_IP}:`.concat(import.meta.env.VITE_WS_PORT);
+let url = new URL(window.location.href);
+let serverUrl = `${url.protocol}//${url.hostname}:${import.meta.env.VITE_WS_PORT}/ws`;
 let socket = io(serverUrl);
-
-async function Server() {
-    try {
-        const localServer = await fetch(serverUrl + '/ip');
-        if (localServer.status == 404) {
-            serverUrl = 'http://' + import.meta.env.VITE_WS_SERVER.concat(':' + import.meta.env.VITE_WS_PORT);
-        }
-    } catch (err) {
-        console.dir({ err });
-    }
-    serverUrl = `${serverUrl}/ws`;
-    socket = io(serverUrl);
-}
-await Server();
 
 export default socket;

@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-let serverUrl = 'http://localhost:'.concat(import.meta.env.VITE_WS_PORT);
+let serverUrl = `http://${import.meta.env.VITE_PRIVATE_IP}:`.concat(import.meta.env.VITE_WS_PORT);
 let socket = io(serverUrl);
 
 async function Server() {

@@ -38,6 +38,9 @@ export default defineConfig({
             },
         }),
     ],
+    server: {
+        port: 7001
+    },
     css: {
         preprocessorOptions: {
             sass: {},
